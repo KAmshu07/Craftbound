@@ -11,7 +11,7 @@ public class TextureQuickAccessWindow : EditorWindow
     private Dictionary<string, List<Texture2D>> categorizedTextures;
     private Dictionary<string, Texture2D> texturePreviews;
     private HashSet<string> collapsedCategories;
-    private bool showPackageTextures = true; // Toggle to show/hide package textures
+    private bool showPackageTextures = false; 
 
     [MenuItem("Tools/Texture Quick Access")]
     public static void ShowWindow()

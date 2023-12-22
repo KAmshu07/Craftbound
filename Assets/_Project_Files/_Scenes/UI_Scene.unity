@@ -1638,27 +1638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bc04131e60d5a4a97700f730106b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCategories:
-  - name: Text
-    references:
-    - name: GreetingText
-      uiElement: {fileID: 900429422}
-      elementType: 2
-  - name: Button
-    references:
-    - name: MyButton
-      uiElement: {fileID: 215264921}
-      elementType: 1
-  - name: Toggle
-    references:
-    - name: MyToggle
-      uiElement: {fileID: 374751494}
-      elementType: 3
-  - name: InputField
-    references:
-    - name: MyInputField
-      uiElement: {fileID: 1296564376}
-      elementType: 4
+  uiCategories: []
 --- !u!1 &7298814747020529593
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 public class UIReference
 {
     public string name;
+    public string fullPath;
+    public string instanceID;
     public GameObject uiElement;
     public UIElementType elementType;
 }
@@ -23,7 +25,5 @@ public enum UIElementType
     Mask,
     Canvas,
     CanvasGroup,
-    Unknown // for elements that don't fit any of the above categories
+    Unknown
 }
-
-// You can expand this enum with more types as needed, depending on the UI components you use in your project.

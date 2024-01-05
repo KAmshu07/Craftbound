@@ -37,6 +37,16 @@ public class ThirdPersonController : MonoBehaviour
 
     }
 
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Tree"))
+        {
+            Debug.Log("Player has collided with the tree!");
+            cuttingTree = hit.collider.gameObject.GetComponent<CuttingTree>();
+            if(Input.GetKeyDown(KeyCode.C))cuttingTree.StartCutting();
+        }
+    }
+
     void OnEnable()
     {
         EventManager.OnHealthChanged += HandleHealthChanged;

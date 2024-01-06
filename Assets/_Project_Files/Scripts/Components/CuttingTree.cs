@@ -1,7 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class CuttingTree : MonoBehaviour
+public class CuttingTree : MonoBehaviour, IInteractable
 {
     [SerializeField]
     [Required]
@@ -12,7 +12,7 @@ public class CuttingTree : MonoBehaviour
     [LabelWidth(150)]
     public int cutDamage;
 
-    private TreeBase treeType;
+    [SerializeField] public Tree tree;
 
     private void Awake()
     {
@@ -39,40 +39,73 @@ public class CuttingTree : MonoBehaviour
     {
         if (entity == gameObject && newHealth <= 0)
         {
-            CutTree();
+            CutTree(tree);
         }
     }
 
-    [Button("Cut Tree", ButtonSizes.Large)]
-    [GUIColor(0.8f, 1, 0.8f)]
-    private void CutTree()
-    {
-        Debug.Log("Tree has been cut!");
 
-        if (treeType != null)
+    private void CutTree(Tree tree)
+    {
+        if (tree == null)
         {
-            treeType.CutTree(transform.position);
+            Debug.LogError("Tree is not assigned.");
+            return;
+        }
+
+        TREE_TYPE treeType = tree.GetTreeType();
+
+        switch (treeType)
+        {
+            case TREE_TYPE.SMALL:
+                if (tree is SmallTree smallTree)
+                {
+                    smallTree.CutTree(transform.position);
+                }
+                else
+                {
+                    Debug.LogError("Invalid tree type for cutting.");
+                }
+                break;
+
+            case TREE_TYPE.MEDIUM:
+                if (tree is MediumTree mediumTree)
+                {
+                    mediumTree.CutTree(transform.position);
+                }
+                else
+                {
+                    Debug.LogError("Invalid tree type for cutting.");
+                }
+                break;
+
+            case TREE_TYPE.BIG:
+                if (tree is BigTree bigTree)
+                {
+                    bigTree.CutTree(transform.position);
+                }
+                else
+                {
+                    Debug.LogError("Invalid tree type for cutting.");
+                }
+                break;
+
+            default:
+                Debug.LogError($"Unknown tree type: {treeType}");
+                break;
         }
 
         gameObject.SetActive(false);
     }
 
-    [Button("Start Cutting", ButtonSizes.Large)]
-    [GUIColor(0.8f, 1, 0.8f)]
-    public void StartCutting()
+
+    public void StartCutting(Tree tree)
     {
         healthComponent.TakeDamage(cutDamage);
     }
 
-    [FoldoutGroup("Collision Events")]
-    [BoxGroup("Collision Events/Player Collision")]
-    [Button("Player Collision", ButtonSizes.Large)]
-    private void OnCollisionEnter(Collision collision)
+    public void Interact()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Player has collided with the tree!");
-            StartCutting(); // Player automatically starts cutting when colliding
-        }
+        Debug.Log("Player has cutting the tree!");
+        StartCutting(tree);
     }
 }

@@ -1,8 +1,12 @@
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class HealthComponent : MonoBehaviour
 {
+    [FoldoutGroup("Health Settings")]
     public int currentHealth;
+
+    [FoldoutGroup("Health Settings")]
     public int maxHealth;
 
     public void TakeDamage(int damage)

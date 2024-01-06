@@ -6,7 +6,7 @@ public class TreePlanter : MonoBehaviour
     [SerializeField]
     [Required]
     [InfoBox("Assign different tree types here.")]
-    private TreeBase[] treeTypes;
+    private Tree[] treeTypes;
 
     [SerializeField]
     [MinValue(1)]
@@ -14,9 +14,9 @@ public class TreePlanter : MonoBehaviour
     [Tooltip("Number of trees to be planted.")]
     private int treeDensity = 100;
 
-    private TreeBase treeType;
+    private Tree treeType;
 
-    private void SetTreeType(TreeBase selectedTree)
+    private void SetTreeType(Tree selectedTree)
     {
         if (selectedTree != null)
         {
@@ -46,7 +46,7 @@ public class TreePlanter : MonoBehaviour
             Vector3 treePosition = new Vector3(x, y, z);
 
             // Randomly choose a tree type
-            TreeBase treeType = treeTypes[Random.Range(0, treeTypes.Length)];
+            Tree treeType = treeTypes[Random.Range(0, treeTypes.Length)];
 
             GameObject tree = Instantiate(treeType.treePrefab, treePosition, Quaternion.identity);
             tree.transform.parent = terrain.transform;
@@ -67,6 +67,7 @@ public class TreePlanter : MonoBehaviour
                 cuttingTree = tree.AddComponent<CuttingTree>();
                 SetTreeType(treeType);
                 cuttingTree.cutDamage = treeType.cutDamage;
+                cuttingTree.tree = treeType;
             }
         }
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "NewBigTree", menuName = "Tree Type/Big Tree")]
-public class BigTree : TreeBase
+public class BigTree : Tree
 {
     [FoldoutGroup("Big Tree Properties")]
     [LabelWidth(80)]

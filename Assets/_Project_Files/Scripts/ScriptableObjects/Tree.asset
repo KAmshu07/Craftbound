@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9aac08574931fb4cad6f0200cc059d0, type: 3}
   m_Name: Tree
   m_EditorClassIdentifier: 
-  typeName: 
+  typeName: 0
   treePrefab: {fileID: 0}
   baseHealth: 100
   cutDamage: 20

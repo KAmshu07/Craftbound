@@ -105,18 +105,31 @@ public class ScriptLocatorWindow : EditorWindow
 
             foreach (var obj in sceneObjects)
             {
-                var components = obj.GetComponents<Component>();
-                foreach (var component in components)
-                {
-                    if (component != null && MonoScript.FromMonoBehaviour(component as MonoBehaviour) == scriptToFind)
-                    {
-                        foundObjects.Add((scene.name, obj));
-                        break;
-                    }
-                }
+                SearchForObjectWithScript(obj, scene.name);
             }
         }
 
         isFinding = false;
     }
+
+    private void SearchForObjectWithScript(GameObject obj, string sceneName)
+    {
+        var components = obj.GetComponents<Component>();
+
+        foreach (var component in components)
+        {
+            if (component != null && MonoScript.FromMonoBehaviour(component as MonoBehaviour) == scriptToFind)
+            {
+                foundObjects.Add((sceneName, obj));
+                return;
+            }
+        }
+
+        // Recursively search in child objects
+        for (int i = 0; i < obj.transform.childCount; i++)
+        {
+            SearchForObjectWithScript(obj.transform.GetChild(i).gameObject, sceneName);
+        }
+    }
+
 }

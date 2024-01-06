@@ -2,7 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "NewSmallTree", menuName = "Tree Type/Small Tree")]
-public class SmallTree : TreeBase
+public class SmallTree : Tree
 {
     [FoldoutGroup("Small Tree Properties")]
     [LabelWidth(80)]

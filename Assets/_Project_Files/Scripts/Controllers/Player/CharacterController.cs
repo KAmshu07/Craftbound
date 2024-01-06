@@ -1,5 +1,5 @@
-using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class ThirdPersonController : MonoBehaviour
@@ -28,6 +28,7 @@ public class ThirdPersonController : MonoBehaviour
     private Vector3 velocity;
     private bool isCrouching = false;
 
+    [SerializeField] private float interactRange = 2f;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -43,16 +44,15 @@ public class ThirdPersonController : MonoBehaviour
         UpdateCharacterController();
         HandleInput();
     }
-
-    [FoldoutGroup("Collision Events")]
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.collider.CompareTag("Tree"))
-        {
-            Debug.Log("Player has collided with the tree!");
-            cuttingTree = hit.collider.gameObject.GetComponent<CuttingTree>();
-            if (Input.GetKeyDown(KeyCode.C)) cuttingTree.StartCutting();
-        }
+        //{
+        //    Debug.Log("Player has collided with" + hit.gameObject.name);
+        //    if (Input.GetKeyDown(KeyCode.E))
+        //    {
+        //        TryInteract();
+        //    }
+        //}
     }
 
     void OnEnable()
@@ -67,7 +67,6 @@ public class ThirdPersonController : MonoBehaviour
         EventManager.OnEntityDeath -= HandleEntityDeath;
     }
 
-    [FoldoutGroup("Movement")]
     void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -85,7 +84,6 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    [FoldoutGroup("Movement")]
     void HandleJump()
     {
         if (characterController.isGrounded)
@@ -99,7 +97,6 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    [FoldoutGroup("Crouch")]
     void HandleCrouch()
     {
         if (characterController.isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
@@ -127,7 +124,6 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    [FoldoutGroup("Health Events")]
     void HandleEntityDeath(GameObject entity)
     {
         if (entity == this.gameObject)
@@ -137,25 +133,48 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    [FoldoutGroup("Input")]
     void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.C) && cuttingTree != null)
-        {
-            // Initiate cutting the tree
-            cuttingTree.StartCutting();
-        }
 
-        // Check for healing button (H)
         if (Input.GetKeyDown(KeyCode.H))
         {
-            healthComponent.Heal(10); // Adjust the amount as needed
+            healthComponent.Heal(10);
         }
 
-        // Check for damaging button (D)
         if (Input.GetKeyDown(KeyCode.D))
         {
-            healthComponent.TakeDamage(10); // Adjust the damage amount as needed
+            healthComponent.TakeDamage(10);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TryInteract();
+        }
+    }
+
+    private void TryInteract()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
+        {
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                interactable.Interact();
+                if (hit.collider.CompareTag("Tree"))
+                {
+                    Debug.Log("Interacting with a tree!");
+                }
+
+                else if (hit.collider.CompareTag("Rock"))
+                {
+                    Debug.Log("Interacting with an rock!");
+                }
+            }
+            else
+            {
+                Debug.Log("No interactable found on the object.");
+            }
         }
     }
 }

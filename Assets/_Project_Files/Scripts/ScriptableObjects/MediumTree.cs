@@ -2,7 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "NewMediumTree", menuName = "Tree Type/Medium Tree")]
-public class MediumTree : TreeBase
+public class MediumTree : Tree
 {
     [FoldoutGroup("Medium Tree Properties")]
     [LabelWidth(90)]

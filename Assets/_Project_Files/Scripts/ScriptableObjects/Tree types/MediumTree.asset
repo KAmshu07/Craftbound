@@ -17,3 +17,5 @@ MonoBehaviour:
   baseHealth: 300
   cutDamage: 40
   woodYield: 10
+  yieldsResin: 1
+  resinYield: 3

@@ -46,8 +46,12 @@ public class TreePlanter : MonoBehaviour
             Vector3 treePosition = new Vector3(x, y, z);
 
             // Randomly choose a tree type
-            Tree treeType = treeTypes[Random.Range(0, treeTypes.Length)];
+            Tree originalTreeType = treeTypes[Random.Range(0, treeTypes.Length)];
 
+            // Create a copy of the original tree type to ensure uniqueness
+            Tree treeType = Instantiate(originalTreeType);
+
+            // Instantiate the tree prefab
             GameObject tree = Instantiate(treeType.treePrefab, treePosition, Quaternion.identity);
             tree.transform.parent = terrain.transform;
 
@@ -68,9 +72,25 @@ public class TreePlanter : MonoBehaviour
                 SetTreeType(treeType);
                 cuttingTree.cutDamage = treeType.cutDamage;
                 cuttingTree.tree = treeType;
+
+                // Randomize boolean properties
+                if (treeType is SmallTree smallTree)
+                {
+                    smallTree.yieldsFibre = Random.value > 0.5f; // 50% chance
+                }
+                else if (treeType is MediumTree mediumTree)
+                {
+                    mediumTree.yieldsResin = Random.value > 0.5f; // 50% chance
+                }
+                else if (treeType is BigTree bigTree)
+                {
+                    bigTree.dropsFruits = Random.value > 0.5f; // 50% chance
+                }
             }
         }
     }
+
+
 
 
 

@@ -18,11 +18,14 @@ public class BigTree : Tree
     public override void CutTree(Vector3 position)
     {
         base.CutTree(position);
-        Debug.Log($"Obtained {woodYield} wood from cutting a BigTree at {position}");
+
+        string logMessage = $"Obtained {woodYield} wood";
 
         if (dropsFruits)
         {
-            Debug.Log($"Found some fruits near the fallen BigTree at {position}");
+            logMessage += $" and found some fruits";
         }
+
+        Debug.Log($"{logMessage} from cutting a BigTree at {position}");
     }
 }

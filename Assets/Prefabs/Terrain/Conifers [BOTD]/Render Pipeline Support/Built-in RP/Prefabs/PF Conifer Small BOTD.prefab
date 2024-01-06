@@ -179,8 +179,6 @@ GameObject:
   - component: {fileID: 4689083990643298}
   - component: {fileID: 205709636835153214}
   - component: {fileID: 136614995598757014}
-  - component: {fileID: -5903877039473901127}
-  - component: {fileID: -3504116211831282046}
   m_Layer: 0
   m_Name: PF Conifer Small BOTD
   m_TagString: Tree
@@ -256,33 +254,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &-5903877039473901127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364922359172550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8195356e8990efa49b2f45f136986647, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 150
-  maxHealth: 150
---- !u!114 &-3504116211831282046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364922359172550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7df90006e313b94e8ace92bd9b427d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cutDamage: 20
 --- !u!1 &1500231203828324
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,37 @@
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class TreePlanter : MonoBehaviour
 {
-    public GameObject treePrefab;
-    public int treeDensity = 100;
+    [SerializeField]
+    [Required]
+    [InfoBox("Assign different tree types here.")]
+    private TreeBase[] treeTypes;
 
-    public void PlaceTrees()
+    [SerializeField]
+    [MinValue(1)]
+    [LabelWidth(150)]
+    [Tooltip("Number of trees to be planted.")]
+    private int treeDensity = 100;
+
+    private TreeBase treeType;
+
+    private void SetTreeType(TreeBase selectedTree)
+    {
+        if (selectedTree != null)
+        {
+            treeType = selectedTree;
+            Debug.Log($"Tree type set to: {treeType.typeName}");
+        }
+        else
+        {
+            Debug.LogError("Select a TreeBase scriptable object to set as the tree type.");
+        }
+    }
+
+    [Button("Place Trees", ButtonSizes.Large)]
+    [GUIColor(0.8f, 1, 0.8f)]
+    private void PlaceTrees()
     {
         Terrain terrain = GetComponent<Terrain>();
         TerrainData terrainData = terrain.terrainData;
@@ -19,15 +45,44 @@ public class TreePlanter : MonoBehaviour
 
             Vector3 treePosition = new Vector3(x, y, z);
 
-            GameObject tree = Instantiate(treePrefab, treePosition, Quaternion.identity);
+            // Randomly choose a tree type
+            TreeBase treeType = treeTypes[Random.Range(0, treeTypes.Length)];
+
+            GameObject tree = Instantiate(treeType.treePrefab, treePosition, Quaternion.identity);
             tree.transform.parent = terrain.transform;
 
-            // Attach HealthComponent and CuttingTree scripts
-            HealthComponent healthComponent = tree.AddComponent<HealthComponent>();
-            CuttingTree cuttingTree = tree.AddComponent<CuttingTree>();
+            // Attach HealthComponent only if not already present
+            HealthComponent healthComponent = tree.GetComponent<HealthComponent>();
+            if (healthComponent == null)
+            {
+                healthComponent = tree.AddComponent<HealthComponent>();
+                healthComponent.maxHealth = treeType.baseHealth;
+                healthComponent.currentHealth = healthComponent.maxHealth;
+            }
 
-            // Adjust other properties as needed
-            healthComponent.maxHealth = 100; // Set maximum health
+            // Attach CuttingTree only if not already present
+            CuttingTree cuttingTree = tree.GetComponent<CuttingTree>();
+            if (cuttingTree == null)
+            {
+                cuttingTree = tree.AddComponent<CuttingTree>();
+                SetTreeType(treeType);
+                cuttingTree.cutDamage = treeType.cutDamage;
+            }
+        }
+    }
+
+
+
+
+    [Button("Remove All Trees", ButtonSizes.Large)]
+    [GUIColor(1, 0.8f, 0.8f)]
+    private void RemoveAllTrees()
+    {
+        GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
+
+        foreach (var tree in trees)
+        {
+            DestroyImmediate(tree);
         }
     }
 }

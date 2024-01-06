@@ -1,4 +1,5 @@
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(CharacterController))]
 public class ThirdPersonController : MonoBehaviour
@@ -6,14 +7,22 @@ public class ThirdPersonController : MonoBehaviour
     private CharacterController characterController;
     private HealthComponent healthComponent;
     private Transform cam;
-
-    [SerializeField] private float speed = 6f;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float crouchHeight = 1f;
     private CuttingTree cuttingTree;
 
+    [SerializeField, FoldoutGroup("Movement")]
+    private float speed = 6f;
+
+    [SerializeField, FoldoutGroup("Movement")]
+    private float turnSmoothTime = 0.1f;
+
+    [SerializeField, FoldoutGroup("Movement")]
+    private float gravity = -9.81f;
+
+    [SerializeField, FoldoutGroup("Movement")]
+    private float jumpHeight = 2f;
+
+    [SerializeField, FoldoutGroup("Crouch")]
+    private float crouchHeight = 1f;
 
     private float turnSmoothVelocity;
     private Vector3 velocity;
@@ -26,7 +35,6 @@ public class ThirdPersonController : MonoBehaviour
         cam = Camera.main.transform;
     }
 
-
     void Update()
     {
         HandleJump();
@@ -34,16 +42,16 @@ public class ThirdPersonController : MonoBehaviour
         HandleMovement();
         UpdateCharacterController();
         HandleInput();
-
     }
 
+    [FoldoutGroup("Collision Events")]
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider.CompareTag("Tree"))
         {
             Debug.Log("Player has collided with the tree!");
             cuttingTree = hit.collider.gameObject.GetComponent<CuttingTree>();
-            if(Input.GetKeyDown(KeyCode.C))cuttingTree.StartCutting();
+            if (Input.GetKeyDown(KeyCode.C)) cuttingTree.StartCutting();
         }
     }
 
@@ -53,12 +61,13 @@ public class ThirdPersonController : MonoBehaviour
         EventManager.OnEntityDeath += HandleEntityDeath;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         EventManager.OnHealthChanged -= HandleHealthChanged;
         EventManager.OnEntityDeath -= HandleEntityDeath;
     }
 
+    [FoldoutGroup("Movement")]
     void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -76,6 +85,7 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
+    [FoldoutGroup("Movement")]
     void HandleJump()
     {
         if (characterController.isGrounded)
@@ -89,6 +99,7 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
+    [FoldoutGroup("Crouch")]
     void HandleCrouch()
     {
         if (characterController.isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
@@ -104,9 +115,9 @@ public class ThirdPersonController : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
+    [FoldoutGroup("Health Events")]
     void HandleHealthChanged(GameObject entity, int newHealth)
     {
-
         if (entity == this.gameObject)
         {
             if (newHealth <= 0)
@@ -115,6 +126,8 @@ public class ThirdPersonController : MonoBehaviour
             }
         }
     }
+
+    [FoldoutGroup("Health Events")]
     void HandleEntityDeath(GameObject entity)
     {
         if (entity == this.gameObject)
@@ -124,6 +137,7 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
+    [FoldoutGroup("Input")]
     void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.C) && cuttingTree != null)

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a4a9c78c8d8c546b6e41e75746ee41, type: 3}
+  m_Name: MediumRock
+  m_EditorClassIdentifier: 
+  typeName: 2
+  rockPrefab: {fileID: 3629768123224413426, guid: 39c5e8db4cf41334bb2229deea5c6b87, type: 3}
+  baseHealth: 800
+  miningDamage: 30
+  stoneYield: 10
+  rewardType: 0
+  yieldsSpecialReward: 0

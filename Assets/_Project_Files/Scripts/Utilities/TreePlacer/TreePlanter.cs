@@ -92,9 +92,6 @@ public class TreePlanter : MonoBehaviour
 
 
 
-
-
-
     [Button("Remove All Trees", ButtonSizes.Large)]
     [GUIColor(1, 0.8f, 0.8f)]
     private void RemoveAllTrees()

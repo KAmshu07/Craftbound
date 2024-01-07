@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
 public class ThirdPersonController : MonoBehaviour
@@ -136,15 +137,15 @@ public class ThirdPersonController : MonoBehaviour
     void HandleInput()
     {
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            healthComponent.Heal(10);
-        }
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    healthComponent.Heal(10);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            healthComponent.TakeDamage(10);
-        }
+        //if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    healthComponent.TakeDamage(10);
+        //}
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -158,6 +159,8 @@ public class ThirdPersonController : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            IPickable pickable = hit.collider.GetComponent<IPickable>();
+
             if (interactable != null)
             {
                 interactable.Interact();
@@ -170,6 +173,11 @@ public class ThirdPersonController : MonoBehaviour
                 {
                     Debug.Log("Interacting with an rock!");
                 }
+            }
+            else if (pickable != null)
+            {
+                pickable.Pickup(gameObject);
+                Destroy(hit.collider.gameObject);
             }
             else
             {

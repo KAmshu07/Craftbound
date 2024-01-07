@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127ac7936c25bff428873a5de54f0255, type: 3}
+  m_Name: Fibre
+  m_EditorClassIdentifier: 
+  itemName: Fibre
+  icon: {fileID: 21300000, guid: ac4f2449c0e916f4b9fe408924ad0f6b, type: 3}
+  itemPrefab: {fileID: 2022523362882812678, guid: 129bd5a1b6ce30a4d833addf80280117, type: 3}
+  fibreAmount: 1

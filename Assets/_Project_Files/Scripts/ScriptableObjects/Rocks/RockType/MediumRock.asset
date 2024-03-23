@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MediumRock
   m_EditorClassIdentifier: 
   typeName: 2
-  rockPrefab: {fileID: 3629768123224413426, guid: 39c5e8db4cf41334bb2229deea5c6b87, type: 3}
+  rockPrefab: {fileID: 100000, guid: 7b5f2f9ea19c74c659ab8ac969280fb2, type: 3}
   baseHealth: 800
   miningDamage: 30
   stoneYield: 10

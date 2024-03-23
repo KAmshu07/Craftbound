@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmallRock
   m_EditorClassIdentifier: 
   typeName: 1
-  rockPrefab: {fileID: 6389266444071543982, guid: 1623444b706a10d4aab183ce1d1c33dc, type: 3}
+  rockPrefab: {fileID: 100000, guid: a2d308598386f4a0797f87a4b95b9dd1, type: 3}
   baseHealth: 500
   miningDamage: 50
   stoneYield: 5

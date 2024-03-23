@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BigRock
   m_EditorClassIdentifier: 
   typeName: 3
-  rockPrefab: {fileID: 3629768123224413426, guid: 39c5e8db4cf41334bb2229deea5c6b87, type: 3}
+  rockPrefab: {fileID: 100000, guid: 24be8e1643b8a474fbb57fcda8a1c454, type: 3}
   baseHealth: 1000
   miningDamage: 25
   stoneYield: 20

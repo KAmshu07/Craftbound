@@ -4,10 +4,35 @@ using Sirenix.OdinInspector;
 public class HealthComponent : MonoBehaviour
 {
     [FoldoutGroup("Health Settings")]
+    [ProgressBar(0, "maxHealth", ColorGetter = "GetHealthBarColor")]
+    [PropertyRange(0, "maxHealth")]
     public int currentHealth;
 
     [FoldoutGroup("Health Settings")]
+    [MinValue(0)]
     public int maxHealth;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+    }
+
+    private Color GetHealthBarColor()
+    {
+        float healthPercentage = (float)currentHealth / maxHealth;
+        if (healthPercentage > 0.5f)
+        {
+            return Color.green;
+        }
+        else if (healthPercentage > 0.25f)
+        {
+            return Color.yellow;
+        }
+        else
+        {
+            return Color.red;
+        }
+    }
 
     public void TakeDamage(int damage)
     {

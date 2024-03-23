@@ -27,12 +27,12 @@ public class MiningRock : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        EventManager.OnHealthChanged += HandleHealthChanged;
+        HealthManager.OnHealthChanged += HandleHealthChanged;
     }
 
     private void OnDestroy()
     {
-        EventManager.OnHealthChanged -= HandleHealthChanged;
+        HealthManager.OnHealthChanged -= HandleHealthChanged;
     }
 
     private void HandleHealthChanged(GameObject entity, int newHealth)

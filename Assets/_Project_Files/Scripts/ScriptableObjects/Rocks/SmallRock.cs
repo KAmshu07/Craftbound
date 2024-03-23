@@ -25,13 +25,41 @@ public class SmallRock : Rock
     {
         base.MineRock(position);
 
+        // Instantiate Stone
+        Stone stoneItem = Instantiate(Resources.Load<Stone>("Stone"));
+        stoneItem.stoneAmount = stoneYield;
+        stoneItem.Drop(GetRandomOffset(position));
+
         string logMessage = $"Obtained {stoneYield} stone";
 
         if (yieldsFlint && flintYield > 0)
         {
+            // Instantiate Flint
+            Flint flintItem = Instantiate(Resources.Load<Flint>("Flint"));
+            flintItem.flintAmount = flintYield;
+            flintItem.Drop(GetRandomOffset(position));
+
             logMessage += $" and {flintYield} flint";
         }
 
         Debug.Log($"{logMessage} from mining a SmallRock at {position}");
+    }
+
+    private Vector3 GetRandomOffset(Vector3 position)
+    {
+        Vector3 randomOffset = Random.onUnitSphere * 2f;
+        randomOffset.y = Mathf.Abs(randomOffset.y); // Ensure a positive y value
+
+        // Adjust the position to avoid spawning below the terrain
+        Vector3 spawnPosition = position + randomOffset;
+
+        // Raycast to check the terrain height
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 100f, Vector3.down, out hit, 200f, LayerMask.GetMask("Terrain")))
+        {
+            spawnPosition.y = Mathf.Max(spawnPosition.y, hit.point.y);
+        }
+
+        return spawnPosition;
     }
 }

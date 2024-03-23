@@ -24,32 +24,66 @@ public class MediumRock : Rock
     {
         base.MineRock(position);
 
+        // Instantiate Stone
+        Stone stoneItem = Instantiate(Resources.Load<Stone>("Stone"));
+        stoneItem.stoneAmount = stoneYield;
+        stoneItem.Drop(GetRandomOffset(position));
+
         string logMessage = $"Obtained {stoneYield} stone";
 
         // Check for special reward (50% chance)
         if (yieldsSpecialReward && Random.value < 0.5f && rewardType != OreType.None)
         {
-            // Randomly select one of the available ore types
-            OreType[] availableOres = { OreType.Iron, OreType.Copper, OreType.Tin };
-            rewardType = availableOres[Random.Range(0, availableOres.Length)];
+            // Instantiate Ore based on the reward type
+            InstantiateOre(position);
 
             logMessage += $" and received a special reward ({rewardType})";
         }
 
         Debug.Log($"{logMessage} from mining a MediumRock at {position}");
-
-        BreakIntoSmallRocks(position);
     }
 
-    private void BreakIntoSmallRocks(Vector3 position)
+    private void InstantiateOre(Vector3 position)
     {
-        Debug.Log($"MediumRock at {position} is breaking into SmallRocks.");
+        Ore oreItem = null;
 
-        // Instantiate and place SmallRocks at the same position
-        // ... Your instantiation logic here ...
+        switch (rewardType)
+        {
+            case OreType.Iron:
+                oreItem = Instantiate(Resources.Load<IronOre>("IronOre"));
+                break;
+            case OreType.Copper:
+                oreItem = Instantiate(Resources.Load<CopperOre>("CopperOre"));
+                break;
+            case OreType.Tin:
+                oreItem = Instantiate(Resources.Load<TinOre>("TinOre"));
+                break;
+            default:
+                break;
+        }
 
-        // Optionally, you can set health, yield, or other properties for SmallRocks
-        // ...
+        if (oreItem != null)
+        {
+            oreItem.Drop(GetRandomOffset(position));
+        }
+    }
+
+    private Vector3 GetRandomOffset(Vector3 position)
+    {
+        Vector3 randomOffset = Random.onUnitSphere * 2f;
+        randomOffset.y = Mathf.Abs(randomOffset.y); // Ensure a positive y value
+
+        // Adjust the position to avoid spawning below the terrain
+        Vector3 spawnPosition = position + randomOffset;
+
+        // Raycast to check the terrain height
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 100f, Vector3.down, out hit, 200f, LayerMask.GetMask("Terrain")))
+        {
+            spawnPosition.y = Mathf.Max(spawnPosition.y, hit.point.y);
+        }
+
+        return spawnPosition;
     }
 }
 

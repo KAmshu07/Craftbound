@@ -14,11 +14,11 @@ public class HealthComponent : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
 
-        EventManager.RaiseHealthChanged(this.gameObject, currentHealth);
+        HealthManager.RaiseHealthChanged(this.gameObject, currentHealth);
 
         if (currentHealth <= 0)
         {
-            EventManager.RaiseEntityDeath(this.gameObject);
+            HealthManager.RaiseEntityDeath(this.gameObject);
         }
     }
 
@@ -27,6 +27,6 @@ public class HealthComponent : MonoBehaviour
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
 
-        EventManager.RaiseHealthChanged(this.gameObject, currentHealth);
+        HealthManager.RaiseHealthChanged(this.gameObject, currentHealth);
     }
 }

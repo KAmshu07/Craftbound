@@ -25,13 +25,41 @@ public class MediumTree : Tree
     {
         base.CutTree(position);
 
+        // Instantiate Wood
+        Wood woodItem = Instantiate(Resources.Load<Wood>("Wood"));
+        woodItem.woodAmount = woodYield;
+        woodItem.Drop(GetRandomOffset(position));
+
         string logMessage = $"Obtained {woodYield} wood";
 
         if (yieldsResin)
         {
+            // Instantiate Resin
+            Resin resinItem = Instantiate(Resources.Load<Resin>("Resin"));
+            resinItem.resinAmount = resinYield;
+            resinItem.Drop(GetRandomOffset(position));
+
             logMessage += $" and {resinYield} resin";
         }
 
         Debug.Log($"{logMessage} from cutting a MediumTree at {position}");
+    }
+
+    private Vector3 GetRandomOffset(Vector3 position)
+    {
+        Vector3 randomOffset = Random.onUnitSphere * 2f;
+        randomOffset.y = Mathf.Abs(randomOffset.y); // Ensure a positive y value
+
+        // Adjust the position to avoid spawning below the terrain
+        Vector3 spawnPosition = position + randomOffset;
+
+        // Raycast to check the terrain height
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 100f, Vector3.down, out hit, 200f, LayerMask.GetMask("Terrain")))
+        {
+            spawnPosition.y = Mathf.Max(spawnPosition.y, hit.point.y);
+        }
+
+        return spawnPosition;
     }
 }

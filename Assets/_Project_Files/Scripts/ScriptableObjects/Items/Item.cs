@@ -47,7 +47,7 @@ public class Item : ScriptableObject, IPickable
         }
         else
         {
-            Debug.LogError($"Item {itemName} doesn't have a prefab assigned.");
+            Debug.LogError($"Item {itemName} doesn't have a prefab assigned."); 
         }
     }
 }

@@ -1,51 +1,36 @@
 using Sirenix.OdinInspector;
-using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
 public class ThirdPersonController : MonoBehaviour
 {
-    public static event Action OnPlayerDeath;
-
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Jumping,
-        Crouching,
-        Interacting,
-        Dead
-    }
-
-    [ShowInInspector, ReadOnly, TabGroup("State")]
-    private PlayerState currentState = PlayerState.Idle;
-
     private CharacterController characterController;
     private HealthComponent healthComponent;
     private Transform cam;
+    private CuttingTree cuttingTree;
 
-    [SerializeField, TabGroup("Movement")]
+    [SerializeField, FoldoutGroup("Movement")]
     private float speed = 6f;
 
-    [SerializeField, TabGroup("Movement")]
+    [SerializeField, FoldoutGroup("Movement")]
     private float turnSmoothTime = 0.1f;
 
-    [SerializeField, TabGroup("Movement")]
+    [SerializeField, FoldoutGroup("Movement")]
     private float gravity = -9.81f;
 
-    [SerializeField, TabGroup("Movement")]
+    [SerializeField, FoldoutGroup("Movement")]
     private float jumpHeight = 2f;
 
-    [SerializeField, TabGroup("Crouch")]
+    [SerializeField, FoldoutGroup("Crouch")]
     private float crouchHeight = 1f;
 
     private float turnSmoothVelocity;
     private Vector3 velocity;
     private bool isCrouching = false;
 
-    [SerializeField, TabGroup("Extra")]
+    [SerializeField, FoldoutGroup("Extra")]
     private float interactRange = 2f;
-
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -53,45 +38,45 @@ public class ThirdPersonController : MonoBehaviour
         cam = Camera.main.transform;
     }
 
+    void Update()
+    {
+        HandleJump();
+        HandleCrouch();
+        HandleMovement();
+        UpdateCharacterController();
+        HandleInput();
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //{
+        //    Debug.Log("Player has collided with" + hit.gameObject.name);
+        //    if (Input.GetKeyDown(KeyCode.E))
+        //    {
+        //        TryInteract();
+        //    }
+        //}
+    }
+
     void OnEnable()
     {
-        InputManager.Instance.OnMoveInput += HandleMovement;
-        InputManager.Instance.OnJumpInput += HandleJump;
-        InputManager.Instance.OnCrouchInput += HandleCrouch;
-        InputManager.Instance.OnInteractInput += TryInteract;
-        InputManager.Instance.OnHealInput += () => healthComponent.Heal(10);
-        InputManager.Instance.OnDamageInput += () => healthComponent.TakeDamage(10);
+        HealthManager.OnHealthChanged += HandleHealthChanged;
         HealthManager.OnEntityDeath += HandleEntityDeath;
     }
 
     void OnDisable()
     {
-        InputManager.Instance.OnMoveInput -= HandleMovement;
-        InputManager.Instance.OnJumpInput -= HandleJump;
-        InputManager.Instance.OnCrouchInput -= HandleCrouch;
-        InputManager.Instance.OnInteractInput -= TryInteract;
-        InputManager.Instance.OnHealInput -= () => healthComponent.Heal(10);
-        InputManager.Instance.OnDamageInput -= () => healthComponent.TakeDamage(10);
+        HealthManager.OnHealthChanged -= HandleHealthChanged;
         HealthManager.OnEntityDeath -= HandleEntityDeath;
     }
 
-    void Update()
+    void HandleMovement()
     {
-        if (currentState == PlayerState.Dead) return;
-
-        UpdateCharacterController();
-    }
-
-    void HandleMovement(float horizontal, float vertical)
-    {
-        if (currentState == PlayerState.Dead) return;
-
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (direction.magnitude >= 0.1f)
         {
-            currentState = PlayerState.Moving;
-
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -99,27 +84,28 @@ public class ThirdPersonController : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
-        else
-        {
-            currentState = PlayerState.Idle;
-        }
     }
 
     void HandleJump()
     {
-        if (currentState == PlayerState.Dead || !characterController.isGrounded) return;
+        if (characterController.isGrounded)
+        {
+            velocity.y = -2f;
 
-        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        currentState = PlayerState.Jumping;
+            if (Input.GetButtonDown("Jump"))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+        }
     }
 
     void HandleCrouch()
     {
-        if (currentState == PlayerState.Dead) return;
-
-        isCrouching = !isCrouching;
-        characterController.height = isCrouching ? crouchHeight : 2f;
-        currentState = isCrouching ? PlayerState.Crouching : PlayerState.Idle;
+        if (characterController.isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCrouching = !isCrouching;
+            characterController.height = isCrouching ? crouchHeight : 2f;
+        }
     }
 
     void UpdateCharacterController()
@@ -128,10 +114,48 @@ public class ThirdPersonController : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
+    [FoldoutGroup("Health Events")]
+    void HandleHealthChanged(GameObject entity, int newHealth)
+    {
+        if (entity == this.gameObject)
+        {
+            if (newHealth <= 0)
+            {
+                HealthManager.RaiseEntityDeath(this.gameObject);
+            }
+        }
+    }
+
+    void HandleEntityDeath(GameObject entity)
+    {
+        if (entity == this.gameObject)
+        {
+            Debug.Log("Player died");
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    void HandleInput()
+    {
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            healthComponent.Heal(10);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            healthComponent.TakeDamage(10);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TryInteract();
+        }
+    }
+
     private void TryInteract()
     {
-        if (currentState == PlayerState.Dead) return;
-
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
         {
@@ -145,9 +169,10 @@ public class ThirdPersonController : MonoBehaviour
                 {
                     Debug.Log("Interacting with a tree!");
                 }
+
                 else if (hit.collider.CompareTag("Rock"))
                 {
-                    Debug.Log("Interacting with a rock!");
+                    Debug.Log("Interacting with an rock!");
                 }
             }
             else if (pickable != null)
@@ -161,26 +186,4 @@ public class ThirdPersonController : MonoBehaviour
             }
         }
     }
-
-    void HandleEntityDeath(GameObject entity)
-    {
-        if (entity == this.gameObject)
-        {
-            Debug.Log("Player died");
-            currentState = PlayerState.Dead;
-            OnPlayerDeath?.Invoke();
-            PlayerDeath();
-        }
-    }
-
-    void PlayerDeath()
-    {
-        this.gameObject.SetActive(false);
-    }
-
-    public PlayerState GetCurrentState()
-    {
-        return currentState;
-    }
 }
-

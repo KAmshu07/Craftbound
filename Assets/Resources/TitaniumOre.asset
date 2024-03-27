@@ -9,11 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec1d42b28d9c4174883e0bd4a7bf186d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf724a83f6dda8498f92f97352eaf71, type: 3}
   m_Name: TitaniumOre
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
-  itemPrefab: {fileID: 0}
-  oreAmount: 1
-  titaniumAmount: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  itemName: Titanium Ore
+  quantity: 1
+  icon: {fileID: 21300000, guid: 23ca749585b5f7c4398fd40fa60bbc30, type: 3}
+  useTypes: 
+  itemPrefab: {fileID: 4225315353264587482, guid: b4f750ab1f81f7749a02e9408782c644, type: 3}

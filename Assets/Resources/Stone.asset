@@ -9,10 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f21d2e89528ce14e97b6b102e070af7, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf724a83f6dda8498f92f97352eaf71, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   itemName: Stone
+  quantity: 1
   icon: {fileID: 21300000, guid: 0f23c9b61efaba541a3d695aff1242e3, type: 3}
+  useTypes: 
   itemPrefab: {fileID: 876994447225053263, guid: b80bf8c0745738d4291f65eb0f5d8ec7, type: 3}
-  stoneAmount: 1

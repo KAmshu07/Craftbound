@@ -9,13 +9,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff6289b49fc05ac4cae0442999221301, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ffc2861222339a4982dd77161149012, type: 3}
   m_Name: BigRock
   m_EditorClassIdentifier: 
-  typeName: 3
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  rockName: BigRock
   rockPrefab: {fileID: 100000, guid: 24be8e1643b8a474fbb57fcda8a1c454, type: 3}
-  baseHealth: 1000
-  miningDamage: 25
-  stoneYield: 20
-  rewardType: 0
-  yieldsSpecialReward: 0
+  baseHealth: 600
+  miningDamage: 30
+  stoneYield: 5
+  yieldsSpecialReward: 1

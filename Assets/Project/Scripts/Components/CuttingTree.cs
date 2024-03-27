@@ -43,7 +43,6 @@ public class CuttingTree : MonoBehaviour, IInteractable
         }
     }
 
-
     private void CutTree(Tree tree)
     {
         if (tree == null)
@@ -52,51 +51,12 @@ public class CuttingTree : MonoBehaviour, IInteractable
             return;
         }
 
-        TREE_TYPE treeType = tree.GetTreeType();
+        // Call the CutTree method on the tree
+        tree.CutTree(transform.position);
 
-        switch (treeType)
-        {
-            case TREE_TYPE.SMALL:
-                if (tree is SmallTree smallTree)
-                {
-                    smallTree.CutTree(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid tree type for cutting.");
-                }
-                break;
-
-            case TREE_TYPE.MEDIUM:
-                if (tree is MediumTree mediumTree)
-                {
-                    mediumTree.CutTree(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid tree type for cutting.");
-                }
-                break;
-
-            case TREE_TYPE.BIG:
-                if (tree is BigTree bigTree)
-                {
-                    bigTree.CutTree(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid tree type for cutting.");
-                }
-                break;
-
-            default:
-                Debug.LogError($"Unknown tree type: {treeType}");
-                break;
-        }
-
+        // Deactivate the tree GameObject
         gameObject.SetActive(false);
     }
-
 
     public void StartCutting(Tree tree)
     {
@@ -105,7 +65,7 @@ public class CuttingTree : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("Player has cutting the tree!");
+        Debug.Log("Player has cut the tree!");
         StartCutting(tree);
     }
 }

@@ -9,13 +9,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a4a9c78c8d8c546b6e41e75746ee41, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ffc2861222339a4982dd77161149012, type: 3}
   m_Name: MediumRock
   m_EditorClassIdentifier: 
-  typeName: 2
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  rockName: MediumRock
   rockPrefab: {fileID: 100000, guid: 7b5f2f9ea19c74c659ab8ac969280fb2, type: 3}
-  baseHealth: 800
-  miningDamage: 30
-  stoneYield: 10
-  rewardType: 0
-  yieldsSpecialReward: 0
+  baseHealth: 400
+  miningDamage: 40
+  stoneYield: 5
+  yieldsSpecialReward: 1

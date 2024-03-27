@@ -9,11 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44247d0c405873a429916ae25ae26a6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf724a83f6dda8498f92f97352eaf71, type: 3}
   m_Name: IronOre
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   itemName: Iron Ore
+  quantity: 1
   icon: {fileID: 21300000, guid: 2e174edd3a3704442a7d5a8846c9ebd0, type: 3}
+  useTypes: 
   itemPrefab: {fileID: 5260607468136123627, guid: 297503217bd2782478eaa2a0b5f26975, type: 3}
-  oreAmount: 1
-  ironAmount: 1

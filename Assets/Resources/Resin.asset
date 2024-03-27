@@ -9,10 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a3fdd8ac1e767b458582b108ef13b6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf724a83f6dda8498f92f97352eaf71, type: 3}
   m_Name: Resin
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   itemName: Resin
-  icon: {fileID: 21300000, guid: 0ab82c02d71ef69478274ed5cea5e2ed, type: 3}
+  quantity: 1
+  icon: {fileID: 21300000, guid: ac9acfa498124ab469108dcc9360c667, type: 3}
+  useTypes: 
   itemPrefab: {fileID: 8766610259981236401, guid: d0875a80015162747b0d56616ddca727, type: 3}
-  resinAmount: 1

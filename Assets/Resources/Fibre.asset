@@ -9,10 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 127ac7936c25bff428873a5de54f0255, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf724a83f6dda8498f92f97352eaf71, type: 3}
   m_Name: Fibre
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: customProperties
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   itemName: Fibre
-  icon: {fileID: 21300000, guid: ac4f2449c0e916f4b9fe408924ad0f6b, type: 3}
+  quantity: 1
+  icon: {fileID: 21300000, guid: 6be0bde5e800c9c4ab1ad85a567984e9, type: 3}
+  useTypes: 
   itemPrefab: {fileID: 2022523362882812678, guid: 129bd5a1b6ce30a4d833addf80280117, type: 3}
-  fibreAmount: 1

@@ -14,21 +14,6 @@ public class RockScatterer : MonoBehaviour
     [Tooltip("Number of rocks to be scattered.")]
     private int rockDensity = 100;
 
-    private Rock rockType;
-
-    private void SetRockType(Rock selectedRock)
-    {
-        if (selectedRock != null)
-        {
-            rockType = selectedRock;
-            Debug.Log($"Rock type set to: {rockType.typeName}");
-        }
-        else
-        {
-            Debug.LogError("Select a Rock scriptable object to set as the rock type.");
-        }
-    }
-
     [Button("Scatter Rocks", ButtonSizes.Large)]
     [GUIColor(0.8f, 1, 0.8f)]
     private void ScatterRocks()
@@ -46,10 +31,7 @@ public class RockScatterer : MonoBehaviour
             Vector3 rockPosition = new Vector3(x, y, z);
 
             // Randomly choose a rock type
-            Rock originalRockType = rockTypes[Random.Range(0, rockTypes.Length)];
-
-            // Create a copy of the original rock type to ensure uniqueness
-            Rock rockType = Instantiate(originalRockType);
+            Rock rockType = rockTypes[Random.Range(0, rockTypes.Length)];
 
             // Instantiate the rock prefab
             GameObject rock = Instantiate(rockType.rockPrefab, rockPosition, Quaternion.identity);
@@ -69,41 +51,10 @@ public class RockScatterer : MonoBehaviour
             if (miningRock == null)
             {
                 miningRock = rock.AddComponent<MiningRock>();
-                SetRockType(rockType);
                 miningRock.breakDamage = rockType.miningDamage;
                 miningRock.rock = rockType;
-
-                // Randomize boolean properties
-                if (rockType is SmallRock smallRock)
-                {
-                    smallRock.yieldsFlint = Random.value > 0.5f; // 50% chance
-                }
-                else if (rockType is MediumRock mediumRock)
-                {
-                    mediumRock.yieldsSpecialReward = Random.value > 0.5f; // 50% chance
-                    mediumRock.rewardType = GetRandomOreType();
-                }
-                else if (rockType is BigRock bigRock)
-                {
-                    bigRock.yieldsSpecialReward = Random.value > 0.5f; // 50% chance
-                    bigRock.rewardType = GetRandomSpecialRewardType();
-                }
             }
         }
-    }
-
-    private OreType GetRandomOreType()
-    {
-        // Implement logic to get a random ore type here
-        // For example: return OreType.Iron;
-        return (OreType)Random.Range(1, System.Enum.GetValues(typeof(OreType)).Length);
-    }
-
-    private RewardType GetRandomSpecialRewardType()
-    {
-        // Implement logic to get a random special reward type here
-        // For example: return RewardType.Coal;
-        return (RewardType)Random.Range(1, System.Enum.GetValues(typeof(RewardType)).Length);
     }
 
     [Button("Remove All Rocks", ButtonSizes.Large)]

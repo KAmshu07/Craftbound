@@ -20,7 +20,7 @@ public class MiningRock : MonoBehaviour, IInteractable
 
         if (healthComponent == null)
         {
-            Debug.LogError("BreakingRock script requires a HealthComponent on the rock GameObject.");
+            Debug.LogError("MiningRock script requires a HealthComponent on the rock GameObject.");
             enabled = false;
         }
     }
@@ -51,51 +51,12 @@ public class MiningRock : MonoBehaviour, IInteractable
             return;
         }
 
-        ROCK_TYPE rockType = rock.GetRockType();
+        // Call the MineRock method on the rock
+        rock.MineRock(transform.position);
 
-        switch (rockType)
-        {
-            case ROCK_TYPE.SMALL:
-                if (rock is SmallRock smallRock)
-                {
-                    smallRock.MineRock(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid rock type for breaking.");
-                }
-                break;
-
-            case ROCK_TYPE.MEDIUM:
-                if (rock is MediumRock mediumRock)
-                {
-                    mediumRock.MineRock(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid rock type for breaking.");
-                }
-                break;
-
-            case ROCK_TYPE.BIG:
-                if (rock is BigRock bigRock)
-                {
-                    bigRock.MineRock(transform.position);
-                }
-                else
-                {
-                    Debug.LogError("Invalid rock type for breaking.");
-                }
-                break;
-
-            default:
-                Debug.LogError($"Unknown rock type: {rockType}");
-                break;
-        }
-
+        // Deactivate the rock GameObject
         gameObject.SetActive(false);
     }
-
 
     public void StartBreaking(Rock rock)
     {

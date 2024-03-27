@@ -14,21 +14,6 @@ public class TreePlanter : MonoBehaviour
     [Tooltip("Number of trees to be planted.")]
     private int treeDensity = 100;
 
-    private Tree treeType;
-
-    private void SetTreeType(Tree selectedTree)
-    {
-        if (selectedTree != null)
-        {
-            treeType = selectedTree;
-            Debug.Log($"Tree type set to: {treeType.typeName}");
-        }
-        else
-        {
-            Debug.LogError("Select a TreeBase scriptable object to set as the tree type.");
-        }
-    }
-
     [Button("Place Trees", ButtonSizes.Large)]
     [GUIColor(0.8f, 1, 0.8f)]
     private void PlaceTrees()
@@ -46,10 +31,7 @@ public class TreePlanter : MonoBehaviour
             Vector3 treePosition = new Vector3(x, y, z);
 
             // Randomly choose a tree type
-            Tree originalTreeType = treeTypes[Random.Range(0, treeTypes.Length)];
-
-            // Create a copy of the original tree type to ensure uniqueness
-            Tree treeType = Instantiate(originalTreeType);
+            Tree treeType = treeTypes[Random.Range(0, treeTypes.Length)];
 
             // Instantiate the tree prefab
             GameObject tree = Instantiate(treeType.treePrefab, treePosition, Quaternion.identity);
@@ -69,28 +51,11 @@ public class TreePlanter : MonoBehaviour
             if (cuttingTree == null)
             {
                 cuttingTree = tree.AddComponent<CuttingTree>();
-                SetTreeType(treeType);
                 cuttingTree.cutDamage = treeType.cutDamage;
                 cuttingTree.tree = treeType;
-
-                // Randomize boolean properties
-                if (treeType is SmallTree smallTree)
-                {
-                    smallTree.yieldsFibre = Random.value > 0.5f; // 50% chance
-                }
-                else if (treeType is MediumTree mediumTree)
-                {
-                    mediumTree.yieldsResin = Random.value > 0.5f; // 50% chance
-                }
-                else if (treeType is BigTree bigTree)
-                {
-                    bigTree.dropsFruits = Random.value > 0.5f; // 50% chance
-                }
             }
         }
     }
-
-
 
     [Button("Remove All Trees", ButtonSizes.Large)]
     [GUIColor(1, 0.8f, 0.8f)]

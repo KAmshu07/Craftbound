@@ -1,13 +1,13 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "NewRock", menuName = "Rock Type/Base Rock")]
-public class Rock : ScriptableObject
+[CreateAssetMenu(fileName = "NewRock", menuName = "Rock Type/Rock")]
+public class Rock : SerializedScriptableObject
 {
     [BoxGroup("Common Properties")]
     [LabelWidth(70)]
-    [EnumPaging]
-    public ROCK_TYPE typeName;
+    public string rockName;
 
     [BoxGroup("Common Properties")]
     [LabelWidth(70)]
@@ -24,36 +24,65 @@ public class Rock : ScriptableObject
     [Range(0, 50)]
     public int miningDamage = 10;
 
+    [BoxGroup("Common Properties")]
+    [LabelWidth(70)]
+    public int stoneYield = 5;
+
+    [BoxGroup("Common Properties")]
+    [LabelWidth(70)]
+    public bool yieldsSpecialReward;
+
+    [Title("Custom Properties")]
+    [DictionaryDrawerSettings(KeyLabel = "Property", ValueLabel = "Value")]
+    public Dictionary<string, string> customProperties = new Dictionary<string, string>();
+
     [FoldoutGroup("Common Methods")]
     [Button("Mine Rock", ButtonSizes.Large)]
     [GUIColor(0.8f, 1, 0.8f)]
     public virtual void MineRock(Vector3 position)
     {
-        Debug.Log($"{typeName} rock has been mined at {position}");
-    }
+        Debug.Log($"{rockName} rock has been mined at {position}");
 
-    [FoldoutGroup("Common Methods")]
-    [Button("Get Rock Type", ButtonSizes.Large, ButtonStyle.FoldoutButton)]
-    [GUIColor(1, 0.8f, 0.8f)]
-    public ROCK_TYPE GetRockType()
-    {
-        Debug.Log($"This rock is of type: {typeName}");
-        return typeName;
-    }
+        // Instantiate Stone
+        Item stoneItem = Instantiate(Resources.Load<Item>("Stone"));
+        stoneItem.customProperties["stoneAmount"] = stoneYield.ToString();
+        stoneItem.Drop(GetRandomOffset(position));
 
-    private void OnValidate()
-    {
-        if (rockPrefab == null)
+        string logMessage = $"Obtained {stoneYield} stone";
+
+        // Check for special reward
+        if (yieldsSpecialReward)
         {
-            Debug.LogWarning($"{typeName} rockPrefab is not assigned in {name}.");
-        }
-    }
-}
+            // Handle special rewards based on custom properties
+            // For example, check if there's a specific reward type defined
+            if (customProperties.TryGetValue("rewardType", out string rewardType))
+            {
+                // Instantiate the special reward based on the reward type
+                // This can be expanded to handle different reward types
+                Debug.Log($"Received a special reward: {rewardType}");
+            }
 
-public enum ROCK_TYPE
-{
-    None,
-    SMALL,
-    MEDIUM,
-    BIG
+            logMessage += " and received a special reward";
+        }
+
+        Debug.Log($"{logMessage} from mining a {rockName} at {position}");
+    }
+
+    private Vector3 GetRandomOffset(Vector3 position)
+    {
+        Vector3 randomOffset = Random.onUnitSphere * 2f;
+        randomOffset.y = Mathf.Abs(randomOffset.y); // Ensure a positive y value
+
+        // Adjust the position to avoid spawning below the terrain
+        Vector3 spawnPosition = position + randomOffset;
+
+        // Raycast to check the terrain height
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 100f, Vector3.down, out hit, 200f, LayerMask.GetMask("Terrain")))
+        {
+            spawnPosition.y = Mathf.Max(spawnPosition.y, hit.point.y);
+        }
+
+        return spawnPosition;
+    }
 }

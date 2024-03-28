@@ -20,30 +20,17 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: customProperties
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   rockName: SmallRock
   rockPrefab: {fileID: 100000, guid: a2d308598386f4a0797f87a4b95b9dd1, type: 3}
   baseHealth: 300
   miningDamage: 50
-  stoneYield: 5
-  yieldsSpecialReward: 0
+  drops:
+  - item: {fileID: 11400000, guid: f126b75fa300718408c34020cc9ca475, type: 2}
+    quantity: 5
+    isOptional: 0
+    chance: 100
+  - item: {fileID: 11400000, guid: d58a0e5697f3c2d409682f6176653e94, type: 2}
+    quantity: 3
+    isOptional: 1
+    chance: 50

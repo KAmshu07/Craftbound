@@ -20,29 +20,17 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: customProperties
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   treeName: MediumTree
   treePrefab: {fileID: 1743353957770956, guid: 539fa9bc6500e44708e0f7b2c78cbefe, type: 3}
   baseHealth: 200
   cutDamage: 40
-  woodYield: 10
+  drops:
+  - item: {fileID: 11400000, guid: ca3241e1f549144448ccb7dead062d54, type: 2}
+    quantity: 10
+    isOptional: 0
+    chance: 100
+  - item: {fileID: 11400000, guid: 624e7ccb2785c2c43acd7b2afc7d49eb, type: 2}
+    quantity: 1
+    isOptional: 1
+    chance: 50

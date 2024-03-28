@@ -25,9 +25,7 @@ public class RockScatterer : MonoBehaviour
         {
             float x = Random.Range(0f, terrainData.size.x);
             float z = Random.Range(0f, terrainData.size.z);
-
             float y = terrain.SampleHeight(new Vector3(x, 0f, z));
-
             Vector3 rockPosition = new Vector3(x, y, z);
 
             // Randomly choose a rock type
@@ -62,7 +60,6 @@ public class RockScatterer : MonoBehaviour
     private void RemoveAllRocks()
     {
         GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
-
         foreach (var rock in rocks)
         {
             DestroyImmediate(rock);

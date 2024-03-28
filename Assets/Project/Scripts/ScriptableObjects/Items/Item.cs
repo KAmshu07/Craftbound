@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Items/Item")]
-public class Item : SerializedScriptableObject, IPickable
+public class Item : SerializedScriptableObject
 {
     [Header("Common Properties")]
     [LabelText("Item Name")]
@@ -29,37 +29,10 @@ public class Item : SerializedScriptableObject, IPickable
 
     [Title("Usage")]
     [Button("Use", ButtonSizes.Large)]
-    public virtual void Use(GameObject user)
+    public virtual void Use()
     {
         Debug.Log($"Using {itemName}");
-
-        foreach (var useType in useTypes)
-        {
-            switch (useType)
-            {
-                case UseType.Fuel:
-                    Debug.Log($"{itemName} used as fuel.");
-                    // Add fuel usage code here
-                    break;
-
-                case UseType.Craft:
-                    Debug.Log($"Crafting with {itemName}.");
-                    // Add crafting code here
-                    break;
-
-                case UseType.Eat:
-                    Debug.Log($"Eating {itemName}.");
-                    // Add eating code here
-                    break;
-
-                case UseType.Smelt:
-                    Debug.Log($"Smelting {itemName}.");
-                    // Add smelting code here
-                    break;
-
-                    // Add more cases for other use types as needed
-            }
-        }
+        // You can access custom properties here using customProperties["propertyName"]
     }
 
     [Title("Dropping")]

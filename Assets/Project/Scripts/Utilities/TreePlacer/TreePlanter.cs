@@ -25,9 +25,7 @@ public class TreePlanter : MonoBehaviour
         {
             float x = Random.Range(0f, terrainData.size.x);
             float z = Random.Range(0f, terrainData.size.z);
-
             float y = terrain.SampleHeight(new Vector3(x, 0f, z));
-
             Vector3 treePosition = new Vector3(x, y, z);
 
             // Randomly choose a tree type
@@ -62,7 +60,6 @@ public class TreePlanter : MonoBehaviour
     private void RemoveAllTrees()
     {
         GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
-
         foreach (var tree in trees)
         {
             DestroyImmediate(tree);

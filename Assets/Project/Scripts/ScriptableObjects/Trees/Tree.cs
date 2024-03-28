@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewTree", menuName = "Tree Type/Tree")]
 public class Tree : SerializedScriptableObject
@@ -24,13 +24,8 @@ public class Tree : SerializedScriptableObject
     [Range(0, 100)]
     public int cutDamage = 20;
 
-    [BoxGroup("Common Properties")]
-    [LabelWidth(70)]
-    public int woodYield = 5;
-
-    [Title("Custom Properties")]
-    [DictionaryDrawerSettings(KeyLabel = "Property", ValueLabel = "Value")]
-    public Dictionary<string, string> customProperties = new Dictionary<string, string>();
+    [Title("Tree Drops")]
+    public List<TreeDrop> drops = new List<TreeDrop>();
 
     [FoldoutGroup("Common Methods")]
     [Button("Cut Tree", ButtonSizes.Large)]
@@ -39,27 +34,17 @@ public class Tree : SerializedScriptableObject
     {
         Debug.Log($"{treeName} tree has been cut at {position}");
 
-        // Instantiate Wood
-        Item woodItem = Instantiate(Resources.Load<Item>("Wood"));
-        woodItem.customProperties["woodAmount"] = woodYield.ToString();
-        woodItem.Drop(GetRandomOffset(position));
-
-        string logMessage = $"Obtained {woodYield} wood";
-
-        // Check for special rewards based on custom properties
-        // For example, check if the tree yields fibre
-        if (customProperties.TryGetValue("fibreYield", out string fibreYieldStr))
+        // Handle drops
+        foreach (var drop in drops)
         {
-            int fibreYield = int.Parse(fibreYieldStr);
-            Item fibreItem = Instantiate(Resources.Load<Item>("Fibre"));
-            fibreItem.customProperties["fibreAmount"] = fibreYield.ToString();
-            fibreItem.Drop(GetRandomOffset(position));
-            logMessage += $" and {fibreYield} fibre";
+            if (!drop.isOptional || Random.Range(0f, 100f) <= drop.chance)
+            {
+                Item droppedItem = Instantiate(drop.item);
+                droppedItem.quantity = drop.quantity; // Set the quantity
+                droppedItem.Drop(GetRandomOffset(position));
+                Debug.Log($"Dropped {drop.quantity} x {droppedItem.itemName} from {treeName}");
+            }
         }
-
-        // Add more checks for other rewards as needed
-
-        Debug.Log($"{logMessage} from cutting a {treeName} at {position}");
     }
 
     private Vector3 GetRandomOffset(Vector3 position)
@@ -79,4 +64,14 @@ public class Tree : SerializedScriptableObject
 
         return spawnPosition;
     }
+}
+
+[System.Serializable]
+public class TreeDrop
+{
+    public Item item;
+    public int quantity = 1; // Default quantity is 1
+    public bool isOptional;
+    [Range(0, 100)]
+    public float chance = 100; // Chance is only used if isOptional is true
 }

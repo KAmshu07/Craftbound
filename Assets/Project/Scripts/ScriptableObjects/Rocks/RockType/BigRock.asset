@@ -20,30 +20,25 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: customProperties
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   rockName: BigRock
   rockPrefab: {fileID: 100000, guid: 24be8e1643b8a474fbb57fcda8a1c454, type: 3}
   baseHealth: 600
   miningDamage: 30
-  stoneYield: 5
-  yieldsSpecialReward: 1
+  drops:
+  - item: {fileID: 11400000, guid: f126b75fa300718408c34020cc9ca475, type: 2}
+    quantity: 15
+    isOptional: 0
+    chance: 100
+  - item: {fileID: 11400000, guid: c6df4bb6be63c0b4ba73c99d3285cf73, type: 2}
+    quantity: 1
+    isOptional: 1
+    chance: 5
+  - item: {fileID: 11400000, guid: 810d6a7470237aa46ad66d683ba92e09, type: 2}
+    quantity: 1
+    isOptional: 1
+    chance: 3
+  - item: {fileID: 11400000, guid: e596c2749d3e3d74da56c7a001e146ae, type: 2}
+    quantity: 2
+    isOptional: 1
+    chance: 10

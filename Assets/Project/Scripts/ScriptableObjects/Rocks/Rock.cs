@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewRock", menuName = "Rock Type/Rock")]
 public class Rock : SerializedScriptableObject
@@ -17,24 +17,15 @@ public class Rock : SerializedScriptableObject
     [BoxGroup("Common Properties")]
     [LabelWidth(70)]
     [Range(0, 1000)]
-    public int baseHealth = 50;
+    public int baseHealth = 100;
 
     [BoxGroup("Common Properties")]
     [LabelWidth(70)]
-    [Range(0, 50)]
-    public int miningDamage = 10;
+    [Range(0, 100)]
+    public int miningDamage = 20;
 
-    [BoxGroup("Common Properties")]
-    [LabelWidth(70)]
-    public int stoneYield = 5;
-
-    [BoxGroup("Common Properties")]
-    [LabelWidth(70)]
-    public bool yieldsSpecialReward;
-
-    [Title("Custom Properties")]
-    [DictionaryDrawerSettings(KeyLabel = "Property", ValueLabel = "Value")]
-    public Dictionary<string, string> customProperties = new Dictionary<string, string>();
+    [Title("Rock Drops")]
+    public List<RockDrop> drops = new List<RockDrop>();
 
     [FoldoutGroup("Common Methods")]
     [Button("Mine Rock", ButtonSizes.Large)]
@@ -43,29 +34,17 @@ public class Rock : SerializedScriptableObject
     {
         Debug.Log($"{rockName} rock has been mined at {position}");
 
-        // Instantiate Stone
-        Item stoneItem = Instantiate(Resources.Load<Item>("Stone"));
-        stoneItem.customProperties["stoneAmount"] = stoneYield.ToString();
-        stoneItem.Drop(GetRandomOffset(position));
-
-        string logMessage = $"Obtained {stoneYield} stone";
-
-        // Check for special reward
-        if (yieldsSpecialReward)
+        // Handle drops
+        foreach (var drop in drops)
         {
-            // Handle special rewards based on custom properties
-            // For example, check if there's a specific reward type defined
-            if (customProperties.TryGetValue("rewardType", out string rewardType))
+            if (drop.item != null && (!drop.isOptional || Random.Range(0f, 100f) <= drop.chance))
             {
-                // Instantiate the special reward based on the reward type
-                // This can be expanded to handle different reward types
-                Debug.Log($"Received a special reward: {rewardType}");
+                Item droppedItem = Instantiate(drop.item);
+                droppedItem.quantity = drop.quantity; // Set the quantity
+                droppedItem.Drop(GetRandomOffset(position));
+                Debug.Log($"Dropped {drop.quantity} x {droppedItem.itemName} from {rockName}");
             }
-
-            logMessage += " and received a special reward";
         }
-
-        Debug.Log($"{logMessage} from mining a {rockName} at {position}");
     }
 
     private Vector3 GetRandomOffset(Vector3 position)
@@ -85,4 +64,14 @@ public class Rock : SerializedScriptableObject
 
         return spawnPosition;
     }
+}
+
+[System.Serializable]
+public class RockDrop
+{
+    public Item item;
+    public int quantity = 1; // Default quantity is 1
+    public bool isOptional;
+    [Range(0, 100)]
+    public float chance = 100; // Chance is only used if isOptional is true
 }

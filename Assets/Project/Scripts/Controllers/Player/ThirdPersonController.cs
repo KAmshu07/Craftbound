@@ -31,12 +31,16 @@ public class ThirdPersonController : MonoBehaviour
 
     [SerializeField, FoldoutGroup("Extra")]
     private float interactRange = 2f;
+    private Inventory inventory;
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         healthComponent = GetComponent<HealthComponent>();
         cam = Camera.main.transform;
+        inventory = GetComponent<Inventory>(); // Add this line
     }
+
 
     void Update()
     {
@@ -152,6 +156,10 @@ public class ThirdPersonController : MonoBehaviour
         {
             TryInteract();
         }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            OpenInventory();
+        }
     }
 
     private void TryInteract()
@@ -183,6 +191,23 @@ public class ThirdPersonController : MonoBehaviour
             else
             {
                 Debug.Log("No interactable found on the object.");
+            }
+        }
+    }
+
+    private void OpenInventory()
+    {
+        Debug.Log("Opening Inventory:");
+        foreach (var category in System.Enum.GetValues(typeof(ItemCategory)))
+        {
+            var items = inventory.GetItemsByCategory((ItemCategory)category);
+            if (items.Count > 0)
+            {
+                Debug.Log($"{category}:");
+                foreach (var item in items)
+                {
+                    Debug.Log($"- {item.ItemName} x{item.Quantity}");
+                }
             }
         }
     }

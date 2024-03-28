@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Fibre
   quantity: 1
   icon: {fileID: 21300000, guid: 6be0bde5e800c9c4ab1ad85a567984e9, type: 3}
+  description: 
+  category: 4
   useTypes: 
   itemPrefab: {fileID: 2022523362882812678, guid: 129bd5a1b6ce30a4d833addf80280117, type: 3}

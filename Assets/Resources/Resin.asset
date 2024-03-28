@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Resin
   quantity: 1
   icon: {fileID: 21300000, guid: ac9acfa498124ab469108dcc9360c667, type: 3}
+  description: 
+  category: 5
   useTypes: 
   itemPrefab: {fileID: 8766610259981236401, guid: d0875a80015162747b0d56616ddca727, type: 3}

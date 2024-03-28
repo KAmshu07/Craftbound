@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Iron Ore
   quantity: 1
   icon: {fileID: 21300000, guid: 2e174edd3a3704442a7d5a8846c9ebd0, type: 3}
+  description: 
+  category: 4
   useTypes: 
   itemPrefab: {fileID: 5260607468136123627, guid: 297503217bd2782478eaa2a0b5f26975, type: 3}

@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Fruit
   quantity: 1
   icon: {fileID: 21300000, guid: ecbf7f31051c29c4099286c71eaecb9f, type: 3}
+  description: 
+  category: 3
   useTypes: 
   itemPrefab: {fileID: 1527527770341743132, guid: ba6000aeaba1c214cb128645267b15be, type: 3}

@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Items/Item")]
-public class Item : SerializedScriptableObject
+public class Item : SerializedScriptableObject, IInventoryItem
 {
     [Header("Common Properties")]
     [LabelText("Item Name")]
@@ -16,11 +16,18 @@ public class Item : SerializedScriptableObject
     [LabelText("Icon")]
     public Sprite icon;
 
+    [TextArea]
+    [LabelText("Description")]
+    public string description;
+
+    [LabelText("Category")]
+    public ItemCategory category;
+
     [LabelText("Use Types")]
     public List<UseType> useTypes = new List<UseType>();
 
     [Title("Prefab")]
-    [InlineEditor(InlineEditorModes.GUIOnly)]
+    [InlineEditor(InlineEditorModes.GUIAndPreview)]
     public GameObject itemPrefab;
 
     [Title("Custom Properties")]
@@ -29,10 +36,37 @@ public class Item : SerializedScriptableObject
 
     [Title("Usage")]
     [Button("Use", ButtonSizes.Large)]
-    public virtual void Use()
+    public virtual void Use(GameObject user)
     {
         Debug.Log($"Using {itemName}");
-        // You can access custom properties here using customProperties["propertyName"]
+
+        foreach (var useType in useTypes)
+        {
+            switch (useType)
+            {
+                case UseType.Fuel:
+                    Debug.Log($"{itemName} used as fuel.");
+                    // Add fuel usage code here
+                    break;
+
+                case UseType.Craft:
+                    Debug.Log($"Crafting with {itemName}.");
+                    // Add crafting code here
+                    break;
+
+                case UseType.Eat:
+                    Debug.Log($"Eating {itemName}.");
+                    // Add eating code here
+                    break;
+
+                case UseType.Smelt:
+                    Debug.Log($"Smelting {itemName}.");
+                    // Add smelting code here
+                    break;
+
+                    // Add more cases for other use types as needed
+            }
+        }
     }
 
     [Title("Dropping")]
@@ -61,5 +95,15 @@ public class Item : SerializedScriptableObject
         {
             Debug.LogError($"Item {itemName} doesn't have a prefab assigned.");
         }
+    }
+
+    // IInventoryItem interface implementation
+    public string ItemName => itemName;
+    public Sprite Icon => icon;
+    public ItemCategory Category => category;
+    public int Quantity
+    {
+        get => quantity;
+        set => quantity = value;
     }
 }

@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Tin Ore
   quantity: 1
   icon: {fileID: 21300000, guid: 2d10530461d50fb40837cab621e82fc4, type: 3}
+  description: 
+  category: 5
   useTypes: 
   itemPrefab: {fileID: 4225315353264587482, guid: b4f750ab1f81f7749a02e9408782c644, type: 3}

@@ -44,5 +44,7 @@ MonoBehaviour:
   itemName: Copper Ore
   quantity: 1
   icon: {fileID: 21300000, guid: b323a410dfafa164295711dedefec141, type: 3}
+  description: 
+  category: 4
   useTypes: 
   itemPrefab: {fileID: 7214749079594565012, guid: dd9d682766e4258479887272ea8a60a1, type: 3}

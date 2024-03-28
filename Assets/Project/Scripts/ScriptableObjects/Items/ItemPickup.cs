@@ -18,10 +18,18 @@ public class ItemPickup : MonoBehaviour, IPickable
     {
         if (item != null)
         {
-            item.Pickup(picker);
-            Debug.Log($"Picked up {item.itemName} x{item.quantity} by {picker.name}");
+            Inventory playerInventory = picker.GetComponent<Inventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.AddItem(item);
+                Debug.Log($"Picked up {item.itemName} x{item.quantity} by {picker.name} and added to inventory.");
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("Picker does not have an Inventory component.");
+            }
         }
         else
         {

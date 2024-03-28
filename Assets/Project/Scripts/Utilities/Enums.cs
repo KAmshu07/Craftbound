@@ -1,3 +1,18 @@
+public enum ItemCategory
+{
+    None,
+    Weapon,
+    Artifact,
+    Food,
+    Materials, 
+    WeaponUpgradeMaterial,
+    CharacterDevelopmentMaterial,
+    Gadget,
+    QuestItem,
+    PreciousItem
+}
+
+
 public enum UseType
 {
     None,

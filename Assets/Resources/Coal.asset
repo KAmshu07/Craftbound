@@ -44,6 +44,7 @@ MonoBehaviour:
   itemName: Coal
   quantity: 1
   icon: {fileID: 21300000, guid: 4564f9f3e85e53545b258c097cec0ba7, type: 3}
+  rarity: 1
   description: 
   category: 4
   useTypes: 

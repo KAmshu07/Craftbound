@@ -6,6 +6,7 @@ public interface IInventoryItem
     Sprite Icon { get; }
     ItemCategory Category { get; }
     int Quantity { get; set; }
+    int Rarity { get; }
     void Use(GameObject user);
     // Add more common properties and methods as needed
 }

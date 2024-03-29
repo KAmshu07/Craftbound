@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour
         {
             itemsByCategory[item.Category] = new List<Item>();
         }
-
+        
         var existingItem = itemsByCategory[item.Category].Find(i => i.ItemName == item.ItemName);
         if (existingItem != null)
         {
@@ -82,7 +82,7 @@ public class Inventory : MonoBehaviour
         {
             Debug.Log($"Retrieved items under category {category}: {string.Join(", ", itemsByCategory[category].ConvertAll(item => $"{item.ItemName} x{item.Quantity}"))}");
             return itemsByCategory[category];
-        }
+        } 
         else
         {
             Debug.Log($"No items found under category {category}.");

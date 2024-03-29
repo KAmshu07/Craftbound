@@ -16,6 +16,10 @@ public class Item : SerializedScriptableObject, IInventoryItem
     [LabelText("Icon")]
     public Sprite icon;
 
+    [Header("Rarity")]
+    [Range(0, 5)]
+    public int rarity = 1;
+
     [TextArea]
     [LabelText("Description")]
     public string description;
@@ -101,6 +105,7 @@ public class Item : SerializedScriptableObject, IInventoryItem
     public string ItemName => itemName;
     public Sprite Icon => icon;
     public ItemCategory Category => category;
+    public int Rarity => rarity;
     public int Quantity
     {
         get => quantity;

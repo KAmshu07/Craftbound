@@ -111,4 +111,5 @@ public class Item : SerializedScriptableObject, IInventoryItem
         get => quantity;
         set => quantity = value;
     }
+    public string Description => description;
 }

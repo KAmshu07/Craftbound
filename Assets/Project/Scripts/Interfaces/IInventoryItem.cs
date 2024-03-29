@@ -7,6 +7,7 @@ public interface IInventoryItem
     ItemCategory Category { get; }
     int Quantity { get; set; }
     int Rarity { get; }
+    string Description { get; }
     void Use(GameObject user);
     // Add more common properties and methods as needed
 }

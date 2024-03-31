@@ -44,7 +44,9 @@ MonoBehaviour:
   itemName: Diamond
   quantity: 1
   icon: {fileID: 21300000, guid: cdedf1fddd7f5fa4382fbef73e5d0d3f, type: 3}
-  description: 
+  rarity: 1
+  description: A rare and valuable gemstone used in crafting high-quality tools and
+    jewelry.
   category: 9
   useTypes: 
   itemPrefab: {fileID: 4225315353264587482, guid: 350a24b97de104247be6c3afb8212456, type: 3}

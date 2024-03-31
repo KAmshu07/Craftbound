@@ -33,6 +33,9 @@ public class ThirdPersonController : MonoBehaviour
     private float interactRange = 2f;
     private Inventory inventory;
 
+    [SerializeField, FoldoutGroup("Inventory")]
+    private GameObject inventoryUI;
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -158,7 +161,8 @@ public class ThirdPersonController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            OpenInventory();
+            // OpenInventory();
+            ToggleInventory();
         }
     }
 
@@ -209,6 +213,15 @@ public class ThirdPersonController : MonoBehaviour
                     Debug.Log($"- {item.ItemName} x{item.Quantity}");
                 }
             }
+        }
+    }
+
+    private void ToggleInventory()
+    {
+        if (inventoryUI != null)
+        {
+            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            // Optional: Pause the game or disable player movement when the inventory is open
         }
     }
 }

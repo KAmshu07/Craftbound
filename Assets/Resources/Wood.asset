@@ -44,7 +44,9 @@ MonoBehaviour:
   itemName: Wood
   quantity: 1
   icon: {fileID: 21300000, guid: 9e423dccedbd9ce479c05419e78ec9b7, type: 3}
-  description: 
+  rarity: 1
+  description: Gathered from trees. Essential for building structures and crafting
+    tools.
   category: 4
   useTypes: 
   itemPrefab: {fileID: 4419342633509686785, guid: f035349ba9a3ca04ca246c01e6c72bd2, type: 3}

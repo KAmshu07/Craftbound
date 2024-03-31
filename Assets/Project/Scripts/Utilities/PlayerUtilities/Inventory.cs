@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<ItemCategory, List<Item>> itemsByCategory = new Dictionary<ItemCategory, List<Item>>();
+    private Dictionary<ItemCategory, List<IInventoryItem>> itemsByCategory = new Dictionary<ItemCategory, List<IInventoryItem>>();
 
-    public void AddItem(Item item)
+    public void AddItem(IInventoryItem item)
     {
         if (item == null)
         {
@@ -21,9 +21,9 @@ public class Inventory : MonoBehaviour
 
         if (!itemsByCategory.ContainsKey(item.Category))
         {
-            itemsByCategory[item.Category] = new List<Item>();
+            itemsByCategory[item.Category] = new List<IInventoryItem>();
         }
-        
+
         var existingItem = itemsByCategory[item.Category].Find(i => i.ItemName == item.ItemName);
         if (existingItem != null)
         {
@@ -37,7 +37,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void RemoveItem(Item item, int quantityToRemove)
+    public void RemoveItem(IInventoryItem item, int quantityToRemove)
     {
         if (item == null)
         {
@@ -76,17 +76,17 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public List<Item> GetItemsByCategory(ItemCategory category)
+    public List<IInventoryItem> GetItemsByCategory(ItemCategory category)
     {
         if (itemsByCategory.ContainsKey(category))
         {
             Debug.Log($"Retrieved items under category {category}: {string.Join(", ", itemsByCategory[category].ConvertAll(item => $"{item.ItemName} x{item.Quantity}"))}");
             return itemsByCategory[category];
-        } 
+        }
         else
         {
             Debug.Log($"No items found under category {category}.");
-            return new List<Item>();
+            return new List<IInventoryItem>();
         }
     }
 }

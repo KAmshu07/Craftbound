@@ -11,11 +11,33 @@ public class ItemCardUI : MonoBehaviour
     public Text itemQuantityText;
     public GameObject starPrefab; // Prefab for the star icon indicating rarity
     public Transform starsParent; // Parent object to instantiate stars under
+    InventoryTabManager tabManager;
 
     private List<GameObject> instantiatedStars = new List<GameObject>(); // Keep track of instantiated stars
 
+    private void Awake()
+    {
+        tabManager = FindObjectOfType<InventoryTabManager>();
+    }
+
+    private void OnEnable()
+    {
+        if (tabManager != null)
+        {
+            tabManager.OnItemSelected += SetupCard;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (tabManager != null)
+        {
+            tabManager.OnItemSelected -= SetupCard;
+        }
+    }
+
     public void SetupCard(IInventoryItem itemData)
-    { 
+    {
         // Set the item icon, name, description, and quantity
         itemIcon.sprite = itemData.Icon;
         itemNameText.text = itemData.ItemName;

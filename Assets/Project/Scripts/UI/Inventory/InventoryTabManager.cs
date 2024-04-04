@@ -11,6 +11,14 @@ public class InventoryTabManager : MonoBehaviour
     private Inventory inventory;
     private InventoryItemUI selectedItemUI; // Store the currently selected item UI
 
+    public delegate void ItemSelectedHandler(IInventoryItem selectedItem);
+    public event ItemSelectedHandler OnItemSelected;
+
+    private void OnEnable()
+    {
+        Refresh();
+    }
+
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -80,8 +88,11 @@ public class InventoryTabManager : MonoBehaviour
 
         selectedItemUI = inventoryItemUI;
         selectedItemUI.Select(); // Highlight the selected item
-        itemCardUI.GetComponent<ItemCardUI>().SetupCard(selectedItemUI.ItemData); // Update the item card with the selected item's data
+
+        // Invoke the event to notify subscribers (e.g., ItemCardUI) about the selected item
+        OnItemSelected?.Invoke(selectedItemUI.ItemData);
     }
+
 
     public void Refresh()
     {

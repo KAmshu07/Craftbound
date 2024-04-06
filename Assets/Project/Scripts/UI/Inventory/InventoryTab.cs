@@ -16,7 +16,7 @@ public class InventoryTab : MonoBehaviour
 
         if (tabButton != null)
         {
-            tabButton.onClick.AddListener(() => tabManager.ActivateTab(this));
+            tabButton.onClick.AddListener(() => tabManager?.ActivateTab(this));
         }
         else
         {
@@ -37,7 +37,7 @@ public class InventoryTab : MonoBehaviour
         }
 
         // Optionally, request the inventory system to display items of this tab's category
-        tabManager.DisplayItemsForCategory(category);
+        tabManager?.DisplayItemsForCategory(category);
     }
 
     public void Deselect()

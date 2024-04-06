@@ -4,60 +4,56 @@ using System.Collections.Generic;
 
 public class ItemCardUI : MonoBehaviour
 {
-    // UI elements for the item card
     public Image itemIcon;
     public Text itemNameText;
     public Text itemDescriptionText;
     public Text itemQuantityText;
-    public GameObject starPrefab; // Prefab for the star icon indicating rarity
-    public Transform starsParent; // Parent object to instantiate stars under
-    InventoryTabManager tabManager;
+    public GameObject starPrefab;
+    public Transform starsParent;
 
-    private List<GameObject> instantiatedStars = new List<GameObject>(); // Keep track of instantiated stars
-
-    private void Awake()
-    {
-        tabManager = FindObjectOfType<InventoryTabManager>();
-    }
+    private List<GameObject> instantiatedStars = new List<GameObject>();
 
     private void OnEnable()
     {
-        if (tabManager != null)
+        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
+        if (uiManager != null)
         {
-            tabManager.OnItemSelected += SetupCard;
+            uiManager.OnItemSelected += SetupCard;
+            if (uiManager.SelectedItem != null)
+            {
+                SetupCard(uiManager.SelectedItem);
+            }
         }
     }
 
     private void OnDisable()
     {
-        if (tabManager != null)
+        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
+        if (uiManager != null)
         {
-            tabManager.OnItemSelected -= SetupCard;
+            uiManager.OnItemSelected -= SetupCard;
         }
     }
 
     public void SetupCard(IInventoryItem itemData)
     {
-        // Set the item icon, name, description, and quantity
+        if (itemData == null) return;
+
         itemIcon.sprite = itemData.Icon;
         itemNameText.text = itemData.ItemName;
         itemDescriptionText.text = itemData.Description;
         itemQuantityText.text = $"x{itemData.Quantity}";
-
-        // Update the rarity display
         SetupRarity(itemData.Rarity);
     }
 
     private void SetupRarity(int rarity)
     {
-        // Clear out the old stars
         foreach (var star in instantiatedStars)
         {
             Destroy(star);
         }
         instantiatedStars.Clear();
 
-        // Instantiate new stars based on the rarity
         for (int i = 0; i < rarity; i++)
         {
             var starInstance = Instantiate(starPrefab, starsParent);
@@ -65,16 +61,30 @@ public class ItemCardUI : MonoBehaviour
         }
     }
 
-    // Optionally, you could have a method to animate or highlight the use of the item
     public void AnimateUse()
     {
         Debug.Log("Animate the item being used");
-        // Add animations or effects to show the item being used
     }
 
-    // This method can be called when the "Use" button is clicked in the UI.
+    public void ClearCard()
+{
+    itemIcon.sprite = null;
+    itemNameText.text = "";
+    itemDescriptionText.text = "";
+    itemQuantityText.text = "";
+
+    foreach (var star in instantiatedStars)
+    {
+        Destroy(star);
+    }
+    instantiatedStars.Clear();
+}
+
+
     public void OnUseButtonClicked(GameObject user, IInventoryItem itemData)
     {
+        if (user == null || itemData == null) return;
+
         itemData.Use(user);
         AnimateUse();
     }

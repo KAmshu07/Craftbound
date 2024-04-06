@@ -161,8 +161,11 @@ public class ThirdPersonController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            // OpenInventory();
-            ToggleInventory();
+            InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
+            if (uiManager != null)
+            {
+                uiManager.ToggleInventory();
+            }
         }
     }
 
@@ -220,8 +223,21 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (inventoryUI != null)
         {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            bool isInventoryActive = !inventoryUI.activeSelf;
+            inventoryUI.SetActive(isInventoryActive);
+
+            if (isInventoryActive)
+            {
+                // Find the InventoryUIManager and nullify the selected item when opening the inventory
+                InventoryUIManager uiManager = inventoryUI.GetComponent<InventoryUIManager>();
+                if (uiManager != null)
+                {
+                    uiManager.ClearSelectedItem();
+                }
+            }
+
             // Optional: Pause the game or disable player movement when the inventory is open
         }
     }
+
 }

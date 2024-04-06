@@ -10,6 +10,12 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(IInventoryItem item)
     {
+        if (item == null)
+        {
+            Debug.LogWarning("Attempted to add a null item to the inventory.");
+            return;
+        }
+
         if (!itemsByCategory.ContainsKey(item.Category))
         {
             itemsByCategory[item.Category] = new List<IInventoryItem>();
@@ -30,6 +36,18 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(IInventoryItem item, int quantityToRemove)
     {
+        if (item == null)
+        {
+            Debug.LogWarning("Attempted to remove a null item from the inventory.");
+            return;
+        }
+
+        if (quantityToRemove <= 0)
+        {
+            Debug.LogWarning("Attempted to remove a non-positive quantity of an item.");
+            return;
+        }
+
         if (itemsByCategory.ContainsKey(item.Category))
         {
             var existingItem = itemsByCategory[item.Category].Find(i => i.ItemName == item.ItemName);
@@ -41,6 +59,14 @@ public class Inventory : MonoBehaviour
                     itemsByCategory[item.Category].Remove(existingItem);
                 }
             }
+            else
+            {
+                Debug.LogWarning($"Attempted to remove an item that does not exist in the inventory: {item.ItemName}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Attempted to remove an item from a category that does not exist: {item.Category}");
         }
 
         OnInventoryChanged?.Invoke();

@@ -11,6 +11,12 @@ public class InventoryItemUI : MonoBehaviour
 
     public void SetupItem(IInventoryItem itemData)
     {
+        if (itemData == null)
+        {
+            Debug.LogError("Item data is null in InventoryItemUI.SetupItem.");
+            return;
+        }
+
         currentItemData = itemData; // Store the item data
         iconImage.sprite = itemData.Icon;
         quantityText.text = $"x{itemData.Quantity}";
@@ -28,18 +34,25 @@ public class InventoryItemUI : MonoBehaviour
         // Instantiate stars based on rarity
         for (int i = 0; i < rarity; i++)
         {
-            Instantiate(starPrefab, rarityStarsParent);
+            if (starPrefab != null)
+            {
+                Instantiate(starPrefab, rarityStarsParent);
+            }
+            else
+            {
+                Debug.LogError("Star prefab is not assigned in InventoryItemUI.");
+            }
         }
     }
 
     public void Select()
     {
-
+        // Optional: Add selection logic here
     }
 
     public void Deselect()
     {
-
+        // Optional: Add deselection logic here
     }
 
     public IInventoryItem ItemData => currentItemData;

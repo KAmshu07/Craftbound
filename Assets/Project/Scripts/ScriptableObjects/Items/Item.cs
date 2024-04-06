@@ -109,7 +109,7 @@ public class Item : SerializedScriptableObject, IInventoryItem
     public int Quantity
     {
         get => quantity;
-        set => quantity = value;
+        set => quantity = Mathf.Max(0, value); // Ensure quantity is never negative
     }
     public string Description => description;
 }

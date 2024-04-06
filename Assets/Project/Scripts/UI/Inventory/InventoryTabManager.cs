@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,10 +7,9 @@ public class InventoryTabManager : MonoBehaviour
 {
     [SerializeField] private List<InventoryTab> tabs = new List<InventoryTab>();
     [SerializeField] private GameObject itemUIPrefab;
-    public GameObject itemCardUI;
     private InventoryTab activeTab;
+    public InventoryTab ActiveTab => activeTab;
     private Inventory inventory;
-    private InventoryItemUI selectedItemUI; // Store the currently selected item UI
 
     public delegate void ItemSelectedHandler(IInventoryItem selectedItem);
     public event ItemSelectedHandler OnItemSelected;
@@ -55,47 +55,85 @@ public class InventoryTabManager : MonoBehaviour
         activeTab.Select();
 
         DisplayItemsForCategory(activeTab.category);
+
+        // Automatically select the first item in the category
+        if (activeTab.itemsContainer.childCount > 0)
+        {
+            GameObject firstItemUI = activeTab.itemsContainer.GetChild(0).gameObject;
+            InventoryItemUI inventoryItemUI = firstItemUI?.GetComponent<InventoryItemUI>();
+            if (inventoryItemUI != null)
+            {
+                SelectItem(inventoryItemUI);
+            }
+        }
+        else
+        {
+            StartCoroutine(DelayedClearItemCard());
+        }
+    }
+
+
+    private IEnumerator DelayedSelectFirstItem()
+    {
+        yield return null; // Wait for one frame
+
+        if (activeTab.itemsContainer.childCount > 0)
+        {
+            GameObject firstItemUI = activeTab.itemsContainer.GetChild(0).gameObject;
+            InventoryItemUI inventoryItemUI = firstItemUI?.GetComponent<InventoryItemUI>();
+            if (inventoryItemUI != null)
+            {
+                SelectItem(inventoryItemUI);
+            }
+        }
+    }
+
+    private IEnumerator DelayedClearItemCard()
+    {
+        yield return new WaitForEndOfFrame();
+
+        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.ClearItemCard();
+        }
     }
 
     public void DisplayItemsForCategory(ItemCategory category)
     {
-        // Clear existing items from the container
         foreach (Transform child in activeTab.itemsContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // Display new items for the selected category
-        List<IInventoryItem> items = inventory.GetItemsByCategory(category);
-        foreach (var item in items)
+        if (inventory != null && itemUIPrefab != null)
         {
-            GameObject itemUI = Instantiate(itemUIPrefab, activeTab.itemsContainer);
-            InventoryItemUI inventoryItemUI = itemUI.GetComponent<InventoryItemUI>();
-            inventoryItemUI.SetupItem(item); // Set the data for the item UI element
+            List<IInventoryItem> items = inventory.GetItemsByCategory(category);
+            foreach (var item in items)
+            {
+                GameObject itemUI = Instantiate(itemUIPrefab, activeTab.itemsContainer);
+                InventoryItemUI inventoryItemUI = itemUI.GetComponent<InventoryItemUI>();
+                inventoryItemUI.SetupItem(item);
 
-            // Add listener for selection
-            itemUI.GetComponent<Button>().onClick.AddListener(() => SelectItem(inventoryItemUI));
+                itemUI.GetComponent<Button>().onClick.AddListener(() => SelectItem(inventoryItemUI));
+            }
         }
     }
 
     private void SelectItem(InventoryItemUI inventoryItemUI)
     {
-        if (selectedItemUI != null)
+        if (inventoryItemUI != null)
         {
-            // Deselect the previous item
-            selectedItemUI.Deselect();
+            inventoryItemUI.Select();
+            OnItemSelected?.Invoke(inventoryItemUI.ItemData);
         }
-
-        selectedItemUI = inventoryItemUI;
-        selectedItemUI.Select(); // Highlight the selected item
-
-        // Invoke the event to notify subscribers (e.g., ItemCardUI) about the selected item
-        OnItemSelected?.Invoke(selectedItemUI.ItemData);
     }
-
 
     public void Refresh()
     {
-        DisplayItemsForCategory(activeTab.category);
+        if (activeTab != null)
+        {
+            DisplayItemsForCategory(activeTab.category);
+        }
     }
 }

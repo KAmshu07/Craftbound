@@ -5,7 +5,7 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private InventoryTabManager tabManager;
     [SerializeField] private ItemCardUI itemCardUI;
-    [SerializeField] private GameObject inventoryUI; // Assign the inventory UI GameObject in the inspector
+    [SerializeField] private GameObject inventoryUI;
 
     public delegate void ItemSelectedHandler(IInventoryItem selectedItem);
     public event ItemSelectedHandler OnItemSelected;

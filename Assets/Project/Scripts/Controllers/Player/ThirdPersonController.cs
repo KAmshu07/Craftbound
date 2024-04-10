@@ -1,14 +1,12 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
-public class ThirdPersonController : MonoBehaviour
+public class ThirdPersonController : EventReceiver
 {
     private CharacterController characterController;
     private HealthComponent healthComponent;
     private Transform cam;
-    private CuttingTree cuttingTree;
 
     [SerializeField, FoldoutGroup("Movement")]
     private float speed = 6f;
@@ -41,45 +39,46 @@ public class ThirdPersonController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         healthComponent = GetComponent<HealthComponent>();
         cam = Camera.main.transform;
-        inventory = GetComponent<Inventory>(); // Add this line
+        inventory = GetComponent<Inventory>();
     }
 
-
-    void Update()
+    protected void OnEnable()
     {
-        HandleJump();
-        HandleCrouch();
-        HandleMovement();
-        UpdateCharacterController();
-        HandleInput();
-    }
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        //{
-        //    Debug.Log("Player has collided with" + hit.gameObject.name);
-        //    if (Input.GetKeyDown(KeyCode.E))
-        //    {
-        //        TryInteract();
-        //    }
-        //}
-    }
-
-    void OnEnable()
-    {
+        Subscribe<MoveInputEvent>(HandleMoveInput);
+        Subscribe<JumpInputEvent>(HandleJumpInput);
+        Subscribe<CrouchInputEvent>(HandleCrouchInput);
+        Subscribe<InteractInputEvent>(HandleInteractInput);
+        Subscribe<HealInputEvent>(HandleHealInput);
+        Subscribe<DamageInputEvent>(HandleDamageInput);
+        Subscribe<InventoryInputEvent>(HandleInventoryInput);
         HealthManager.OnHealthChanged += HandleHealthChanged;
         HealthManager.OnEntityDeath += HandleEntityDeath;
     }
 
-    void OnDisable()
+    protected void OnDisable()
     {
         HealthManager.OnHealthChanged -= HandleHealthChanged;
         HealthManager.OnEntityDeath -= HandleEntityDeath;
     }
 
-    void HandleMovement()
+    private void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        UpdateCharacterController();
+    }
+
+    private void UpdateCharacterController()
+    {
+        if (!characterController.isGrounded)
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void HandleMoveInput(MoveInputEvent inputEvent)
+    {
+        float horizontal = inputEvent.Horizontal;
+        float vertical = inputEvent.Vertical;
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (direction.magnitude >= 0.1f)
@@ -93,32 +92,70 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    void HandleJump()
+    private void HandleJumpInput(JumpInputEvent inputEvent)
     {
         if (characterController.isGrounded)
         {
-            velocity.y = -2f;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            }
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
-    void HandleCrouch()
+    private void HandleCrouchInput(CrouchInputEvent inputEvent)
     {
-        if (characterController.isGrounded && Input.GetKeyDown(KeyCode.LeftControl))
+        if (characterController.isGrounded)
         {
             isCrouching = !isCrouching;
             characterController.height = isCrouching ? crouchHeight : 2f;
         }
     }
 
-    void UpdateCharacterController()
+    private void HandleInteractInput(InteractInputEvent inputEvent)
     {
-        velocity.y += gravity * Time.deltaTime;
-        characterController.Move(velocity * Time.deltaTime);
+        TryInteract();
+    }
+
+    private void HandleHealInput(HealInputEvent inputEvent)
+    {
+        healthComponent.Heal(10);
+    }
+
+    private void HandleDamageInput(DamageInputEvent inputEvent)
+    {
+        healthComponent.TakeDamage(10);
+    }
+
+    private void HandleInventoryInput(InventoryInputEvent inputEvent)
+    {
+        ToggleInventory();
+    }
+
+    private void TryInteract()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
+        {
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            IPickable pickable = hit.collider.GetComponent<IPickable>();
+
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+            else if (pickable != null)
+            {
+                pickable.Pickup(gameObject);
+                Destroy(hit.collider.gameObject);
+            }
+        }
+    }
+
+    private void ToggleInventory()
+    {
+        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.ToggleInventory();
+        }
     }
 
     [FoldoutGroup("Health Events")]
@@ -141,103 +178,4 @@ public class ThirdPersonController : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
-
-    void HandleInput()
-    {
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            healthComponent.Heal(10);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            healthComponent.TakeDamage(10);
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryInteract();
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
-            if (uiManager != null)
-            {
-                uiManager.ToggleInventory();
-            }
-        }
-    }
-
-    private void TryInteract()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, interactRange))
-        {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            IPickable pickable = hit.collider.GetComponent<IPickable>();
-
-            if (interactable != null)
-            {
-                interactable.Interact();
-                if (hit.collider.CompareTag("Tree"))
-                {
-                    Debug.Log("Interacting with a tree!");
-                }
-
-                else if (hit.collider.CompareTag("Rock"))
-                {
-                    Debug.Log("Interacting with an rock!");
-                }
-            }
-            else if (pickable != null)
-            {
-                pickable.Pickup(gameObject);
-                Destroy(hit.collider.gameObject);
-            }
-            else
-            {
-                Debug.Log("No interactable found on the object.");
-            }
-        }
-    }
-
-    private void OpenInventory()
-    {
-        Debug.Log("Opening Inventory:");
-        foreach (var category in System.Enum.GetValues(typeof(ItemCategory)))
-        {
-            var items = inventory.GetItemsByCategory((ItemCategory)category);
-            if (items.Count > 0)
-            {
-                Debug.Log($"{category}:");
-                foreach (var item in items)
-                {
-                    Debug.Log($"- {item.ItemName} x{item.Quantity}");
-                }
-            }
-        }
-    }
-
-    private void ToggleInventory()
-    {
-        if (inventoryUI != null)
-        {
-            bool isInventoryActive = !inventoryUI.activeSelf;
-            inventoryUI.SetActive(isInventoryActive);
-
-            if (isInventoryActive)
-            {
-                // Find the InventoryUIManager and nullify the selected item when opening the inventory
-                InventoryUIManager uiManager = inventoryUI.GetComponent<InventoryUIManager>();
-                if (uiManager != null)
-                {
-                    uiManager.ClearSelectedItem();
-                }
-            }
-
-            // Optional: Pause the game or disable player movement when the inventory is open
-        }
-    }
-
 }

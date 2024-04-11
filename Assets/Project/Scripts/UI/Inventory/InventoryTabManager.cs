@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryTabManager : MonoBehaviour
+public class InventoryTabManager : EventReceiver
 {
     [SerializeField] private List<InventoryTab> tabs = new List<InventoryTab>();
     [SerializeField] private GameObject itemUIPrefab;
+    [SerializeField] private ItemCardUI itemCardUI;
     private InventoryTab activeTab;
     public InventoryTab ActiveTab => activeTab;
     private Inventory inventory;
 
-    public delegate void ItemSelectedHandler(IInventoryItem selectedItem);
-    public event ItemSelectedHandler OnItemSelected;
-
     private void OnEnable()
     {
         Refresh();
+        Subscribe<TabSelectedEvent>(OnTabSelected);
+        Subscribe<TabDeselectedEvent>(OnTabDeselected);
     }
 
     private void Awake()
@@ -36,12 +36,20 @@ public class InventoryTabManager : MonoBehaviour
             tabs.Add(tab);
             tab.Init(this, tab.category);
         }
+    }
 
-        if (tabs.Count > 0)
+    private void OnTabSelected(TabSelectedEvent eventArgs)
+    {
+        InventoryTab selectedTab = tabs.Find(tab => tab.category == eventArgs.Category);
+        if (selectedTab != null && selectedTab != activeTab) // Check if the selected tab is not already the active tab
         {
-            activeTab = tabs[0];
-            activeTab.Select();
+            ActivateTab(selectedTab);
         }
+    }
+
+    private void OnTabDeselected(TabDeselectedEvent eventArgs)
+    {
+        // Optional: Handle tab deselection if needed
     }
 
     public void ActivateTab(InventoryTab selectedTab)
@@ -55,48 +63,6 @@ public class InventoryTabManager : MonoBehaviour
         activeTab.Select();
 
         DisplayItemsForCategory(activeTab.category);
-
-        // Automatically select the first item in the category
-        if (activeTab.itemsContainer.childCount > 0)
-        {
-            GameObject firstItemUI = activeTab.itemsContainer.GetChild(0).gameObject;
-            InventoryItemUI inventoryItemUI = firstItemUI?.GetComponent<InventoryItemUI>();
-            if (inventoryItemUI != null)
-            {
-                SelectItem(inventoryItemUI);
-            }
-        }
-        else
-        {
-            StartCoroutine(DelayedClearItemCard());
-        }
-    }
-
-
-    private IEnumerator DelayedSelectFirstItem()
-    {
-        yield return null; // Wait for one frame
-
-        if (activeTab.itemsContainer.childCount > 0)
-        {
-            GameObject firstItemUI = activeTab.itemsContainer.GetChild(0).gameObject;
-            InventoryItemUI inventoryItemUI = firstItemUI?.GetComponent<InventoryItemUI>();
-            if (inventoryItemUI != null)
-            {
-                SelectItem(inventoryItemUI);
-            }
-        }
-    }
-
-    private IEnumerator DelayedClearItemCard()
-    {
-        yield return new WaitForEndOfFrame();
-
-        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
-        if (uiManager != null)
-        {
-            uiManager.ClearItemCard();
-        }
     }
 
     public void DisplayItemsForCategory(ItemCategory category)
@@ -109,23 +75,37 @@ public class InventoryTabManager : MonoBehaviour
         if (inventory != null && itemUIPrefab != null)
         {
             List<IInventoryItem> items = inventory.GetItemsByCategory(category);
-            foreach (var item in items)
+            if (items.Count > 0)
             {
-                GameObject itemUI = Instantiate(itemUIPrefab, activeTab.itemsContainer);
-                InventoryItemUI inventoryItemUI = itemUI.GetComponent<InventoryItemUI>();
-                inventoryItemUI.SetupItem(item);
+                foreach (var item in items)
+                {
+                    GameObject itemUI = Instantiate(itemUIPrefab, activeTab.itemsContainer);
+                    InventoryItemUI inventoryItemUI = itemUI.GetComponent<InventoryItemUI>();
+                    inventoryItemUI.SetupItem(item);
 
-                itemUI.GetComponent<Button>().onClick.AddListener(() => SelectItem(inventoryItemUI));
+                    itemUI.GetComponent<Button>().onClick.AddListener(() => SelectItem(inventoryItemUI));
+                }
+
+                // Automatically select the first item in the category
+                SelectItem(activeTab.itemsContainer.GetChild(0).GetComponent<InventoryItemUI>());
+            }
+            else
+            {
+                // Clear the item card if no items are available in the selected category
+                if (itemCardUI != null)
+                {
+                    itemCardUI.ClearCard();
+                }
             }
         }
     }
+
 
     private void SelectItem(InventoryItemUI inventoryItemUI)
     {
         if (inventoryItemUI != null)
         {
             inventoryItemUI.Select();
-            OnItemSelected?.Invoke(inventoryItemUI.ItemData);
         }
     }
 

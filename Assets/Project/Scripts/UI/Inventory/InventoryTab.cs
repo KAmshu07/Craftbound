@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryTab : MonoBehaviour
+public class InventoryTab : EventReceiver
 {
     [SerializeField] private Button tabButton;
     public GameObject contentPanel; // Panel that gets activated/deactivated when the tab is selected/deselected
@@ -16,7 +16,7 @@ public class InventoryTab : MonoBehaviour
 
         if (tabButton != null)
         {
-            tabButton.onClick.AddListener(() => tabManager?.ActivateTab(this));
+            tabButton.onClick.AddListener(Select);
         }
         else
         {
@@ -36,6 +36,9 @@ public class InventoryTab : MonoBehaviour
             tabButton.interactable = false;
         }
 
+        // Raise an event when the tab is selected
+        EventDispatcher.Publish(new TabSelectedEvent(category));
+
         // Optionally, request the inventory system to display items of this tab's category
         tabManager?.DisplayItemsForCategory(category);
     }
@@ -51,5 +54,29 @@ public class InventoryTab : MonoBehaviour
         {
             tabButton.interactable = true;
         }
+
+        // Raise an event when the tab is deselected
+        EventDispatcher.Publish(new TabDeselectedEvent(category));
+    }
+}
+
+// Define events for tab selection
+public class TabSelectedEvent
+{
+    public ItemCategory Category { get; private set; }
+
+    public TabSelectedEvent(ItemCategory category)
+    {
+        Category = category;
+    }
+}
+
+public class TabDeselectedEvent
+{
+    public ItemCategory Category { get; private set; }
+
+    public TabDeselectedEvent(ItemCategory category)
+    {
+        Category = category;
     }
 }

@@ -1,58 +1,34 @@
 using UnityEngine;
 
-public class InventoryUIManager : MonoBehaviour
+public class InventoryUIManager : EventReceiver
 {
     [SerializeField] private Inventory inventory;
     [SerializeField] private InventoryTabManager tabManager;
     [SerializeField] private ItemCardUI itemCardUI;
-    [SerializeField] private GameObject inventoryUI;
-
-    public delegate void ItemSelectedHandler(IInventoryItem selectedItem);
-    public event ItemSelectedHandler OnItemSelected;
+    [SerializeField] private GameObject inventoryUI; // Assign the inventory UI GameObject in the inspector
 
     public IInventoryItem SelectedItem { get; private set; }
 
     private void OnEnable()
     {
-        if (inventory != null)
-        {
-            inventory.OnInventoryChanged += UpdateInventoryUI;
-        }
-
-        if (tabManager != null)
-        {
-            tabManager.OnItemSelected += HandleItemSelected;
-        }
-
-        if (itemCardUI != null)
-        {
-            OnItemSelected += itemCardUI.SetupCard;
-        }
+        Subscribe<InventoryChangedEvent>(UpdateInventoryUI);
+        Subscribe<ItemSelectedEvent>(HandleItemSelected);
     }
 
-    private void OnDisable()
-    {
-        if (inventory != null)
-        {
-            inventory.OnInventoryChanged -= UpdateInventoryUI;
-        }
-
-        if (tabManager != null)
-        {
-            tabManager.OnItemSelected -= HandleItemSelected;
-        }
-
-        if (itemCardUI != null)
-        {
-            OnItemSelected -= itemCardUI.SetupCard;
-        }
-    }
-
-    private void UpdateInventoryUI()
+    private void UpdateInventoryUI(InventoryChangedEvent eventArgs)
     {
         if (tabManager != null)
         {
             tabManager.Refresh();
+        }
+    }
+
+    private void HandleItemSelected(ItemSelectedEvent eventArgs)
+    {
+        SelectedItem = eventArgs.Item;
+        if (itemCardUI != null)
+        {
+            itemCardUI.SetupCard(SelectedItem);
         }
     }
 
@@ -68,12 +44,6 @@ public class InventoryUIManager : MonoBehaviour
     {
         SelectedItem = null;
         ClearItemCard();
-    }
-
-    private void HandleItemSelected(IInventoryItem selectedItem)
-    {
-        SelectedItem = selectedItem;
-        OnItemSelected?.Invoke(selectedItem);
     }
 
     public void OpenInventory()
@@ -94,10 +64,9 @@ public class InventoryUIManager : MonoBehaviour
         if (inventoryUI != null)
         {
             inventoryUI.SetActive(false);
-            ClearSelectedItem(); 
+            ClearSelectedItem();
         }
     }
-
 
     public void ToggleInventory()
     {

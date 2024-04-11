@@ -1,28 +1,16 @@
-using System;
 using UnityEngine;
 
-public class InventoryController : MonoBehaviour
+public class InventoryController : EventReceiver
 {
     [SerializeField] private Inventory inventory;
     [SerializeField] private InventoryTabManager tabManager;
 
     private void OnEnable()
     {
-        if (inventory != null)
-        {
-            inventory.OnInventoryChanged += UpdateInventoryUI;
-        }
+        Subscribe<InventoryChangedEvent>(UpdateInventoryUI);
     }
 
-    private void OnDisable()
-    {
-        if (inventory != null)
-        {
-            inventory.OnInventoryChanged -= UpdateInventoryUI;
-        }
-    }
-
-    private void UpdateInventoryUI()
+    private void UpdateInventoryUI(InventoryChangedEvent eventArgs)
     {
         tabManager?.Refresh();
     }

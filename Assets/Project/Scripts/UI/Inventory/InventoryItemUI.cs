@@ -47,13 +47,36 @@ public class InventoryItemUI : MonoBehaviour
 
     public void Select()
     {
-        // Optional: Add selection logic here
+        // Raise an event when the item is selected
+        EventDispatcher.Publish(new ItemSelectedEvent(currentItemData));
     }
 
     public void Deselect()
     {
-        // Optional: Add deselection logic here
+        // Raise an event when the item is deselected
+        EventDispatcher.Publish(new ItemDeselectedEvent(currentItemData));
     }
 
     public IInventoryItem ItemData => currentItemData;
+}
+
+// Define events for item selection
+public class ItemSelectedEvent
+{
+    public IInventoryItem Item { get; private set; }
+
+    public ItemSelectedEvent(IInventoryItem item)
+    {
+        Item = item;
+    }
+}
+
+public class ItemDeselectedEvent
+{
+    public IInventoryItem Item { get; private set; }
+
+    public ItemDeselectedEvent(IInventoryItem item)
+    {
+        Item = item;
+    }
 }

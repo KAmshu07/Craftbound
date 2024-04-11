@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class ItemCardUI : MonoBehaviour
+public class ItemCardUI : EventReceiver
 {
     public Image itemIcon;
     public Text itemNameText;
@@ -15,24 +15,12 @@ public class ItemCardUI : MonoBehaviour
 
     private void OnEnable()
     {
-        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
-        if (uiManager != null)
-        {
-            uiManager.OnItemSelected += SetupCard;
-            if (uiManager.SelectedItem != null)
-            {
-                SetupCard(uiManager.SelectedItem);
-            }
-        }
+        Subscribe<ItemSelectedEvent>(OnItemSelected);
     }
 
-    private void OnDisable()
+    private void OnItemSelected(ItemSelectedEvent eventArgs)
     {
-        InventoryUIManager uiManager = FindObjectOfType<InventoryUIManager>();
-        if (uiManager != null)
-        {
-            uiManager.OnItemSelected -= SetupCard;
-        }
+        SetupCard(eventArgs.Item);
     }
 
     public void SetupCard(IInventoryItem itemData)
@@ -67,19 +55,18 @@ public class ItemCardUI : MonoBehaviour
     }
 
     public void ClearCard()
-{
-    itemIcon.sprite = null;
-    itemNameText.text = "";
-    itemDescriptionText.text = "";
-    itemQuantityText.text = "";
-
-    foreach (var star in instantiatedStars)
     {
-        Destroy(star);
-    }
-    instantiatedStars.Clear();
-}
+        itemIcon.sprite = null;
+        itemNameText.text = "";
+        itemDescriptionText.text = "";
+        itemQuantityText.text = "";
 
+        foreach (var star in instantiatedStars)
+        {
+            Destroy(star);
+        }
+        instantiatedStars.Clear();
+    }
 
     public void OnUseButtonClicked(GameObject user, IInventoryItem itemData)
     {

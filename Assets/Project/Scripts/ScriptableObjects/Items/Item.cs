@@ -71,6 +71,9 @@ public class Item : SerializedScriptableObject, IInventoryItem
                     // Add more cases for other use types as needed
             }
         }
+
+        // Raise an event when the item is used
+        EventDispatcher.Publish(new ItemUsedEvent(this, user));
     }
 
     [Title("Dropping")]
@@ -79,12 +82,16 @@ public class Item : SerializedScriptableObject, IInventoryItem
     {
         Debug.Log($"Dropping {itemName} at {position}");
         SpawnItemInWorld(position);
+        // Raise an event when the item is dropped
+        EventDispatcher.Publish(new ItemDroppedEvent(this, position));
     }
 
     [Title("Pickup")]
     public void Pickup(GameObject picker)
     {
         Debug.Log($"Picking up {itemName}");
+        // Raise an event when the item is picked up
+        EventDispatcher.Publish(new ItemPickedUpEvent(this, picker));
     }
 
     private void SpawnItemInWorld(Vector3 position)
@@ -112,4 +119,41 @@ public class Item : SerializedScriptableObject, IInventoryItem
         set => quantity = Mathf.Max(0, value); // Ensure quantity is never negative
     }
     public string Description => description;
+}
+
+// Define events for item actions
+public class ItemUsedEvent
+{
+    public IInventoryItem Item { get; private set; }
+    public GameObject User { get; private set; }
+
+    public ItemUsedEvent(IInventoryItem item, GameObject user)
+    {
+        Item = item;
+        User = user;
+    }
+}
+
+public class ItemDroppedEvent
+{
+    public IInventoryItem Item { get; private set; }
+    public Vector3 Position { get; private set; }
+
+    public ItemDroppedEvent(IInventoryItem item, Vector3 position)
+    {
+        Item = item;
+        Position = position;
+    }
+}
+
+public class ItemPickedUpEvent
+{
+    public IInventoryItem Item { get; private set; }
+    public GameObject Picker { get; private set; }
+
+    public ItemPickedUpEvent(IInventoryItem item, GameObject picker)
+    {
+        Item = item;
+        Picker = picker;
+    }
 }

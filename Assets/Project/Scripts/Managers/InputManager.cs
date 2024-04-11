@@ -45,7 +45,7 @@ public class InputManager : MonoBehaviour
             EventDispatcher.Publish(new HealInputEvent());
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             EventDispatcher.Publish(new DamageInputEvent());
         }

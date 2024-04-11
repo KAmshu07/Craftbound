@@ -972,6 +972,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1629063971126957077, guid: 1c3059bad89980d4cb982ebca5c9a2e2, type: 3}
+      propertyPath: itemCardUI
+      value: 
+      objectReference: {fileID: 479827378}
     - target: {fileID: 1669958974621820489, guid: 1c3059bad89980d4cb982ebca5c9a2e2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000032878736

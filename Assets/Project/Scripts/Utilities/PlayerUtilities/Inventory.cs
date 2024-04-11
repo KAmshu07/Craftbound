@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public event Action OnInventoryChanged;
-
     private Dictionary<ItemCategory, List<IInventoryItem>> itemsByCategory = new Dictionary<ItemCategory, List<IInventoryItem>>();
 
     public void AddItem(IInventoryItem item)
@@ -31,7 +28,8 @@ public class Inventory : MonoBehaviour
             itemsByCategory[item.Category].Add(item);
         }
 
-        OnInventoryChanged?.Invoke();
+        // Publish an inventory change event
+        EventDispatcher.Publish(new InventoryChangedEvent());
     }
 
     public void RemoveItem(IInventoryItem item, int quantityToRemove)
@@ -69,7 +67,8 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning($"Attempted to remove an item from a category that does not exist: {item.Category}");
         }
 
-        OnInventoryChanged?.Invoke();
+        // Publish an inventory change event
+        EventDispatcher.Publish(new InventoryChangedEvent());
     }
 
     public List<IInventoryItem> GetItemsByCategory(ItemCategory category)
@@ -77,3 +76,6 @@ public class Inventory : MonoBehaviour
         return itemsByCategory.ContainsKey(category) ? itemsByCategory[category] : new List<IInventoryItem>();
     }
 }
+
+// Define an event for inventory changes
+public class InventoryChangedEvent { }

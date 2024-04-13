@@ -5,11 +5,17 @@ public class Inventory : MonoBehaviour
 {
     private Dictionary<ItemCategory, List<IInventoryItem>> itemsByCategory = new Dictionary<ItemCategory, List<IInventoryItem>>();
 
-    public void AddItem(IInventoryItem item)
+    public void AddItem(IInventoryItem item, int quantity)
     {
         if (item == null)
         {
             Debug.LogWarning("Attempted to add a null item to the inventory.");
+            return;
+        }
+
+        if (quantity <= 0)
+        {
+            Debug.LogWarning("Attempted to add an item with non-positive quantity.");
             return;
         }
 
@@ -21,11 +27,22 @@ public class Inventory : MonoBehaviour
         var existingItem = itemsByCategory[item.Category].Find(i => i.ItemName == item.ItemName);
         if (existingItem != null)
         {
-            existingItem.Quantity += item.Quantity;
+            existingItem.Quantity += quantity;
         }
         else
         {
-            itemsByCategory[item.Category].Add(item);
+            // If the item does not exist, clone it and set the quantity
+            // Here, we ensure that the item is actually an instance of Item, which can be instantiated
+            if (item is Item concreteItem)
+            {
+                Item newItem = Instantiate(concreteItem); // Instantiating the ScriptableObject
+                newItem.Quantity = quantity; // Setting quantity
+                itemsByCategory[item.Category].Add(newItem);
+            }
+            else
+            {
+                Debug.LogError("The item is not a concrete instance that can be instantiated.");
+            }
         }
 
         // Publish an inventory change event
@@ -75,6 +92,32 @@ public class Inventory : MonoBehaviour
     {
         return itemsByCategory.ContainsKey(category) ? itemsByCategory[category] : new List<IInventoryItem>();
     }
+
+    public bool HasItem(IInventoryItem item, int quantity)
+    {
+        if (item == null) return false;
+
+        if (itemsByCategory.TryGetValue(item.Category, out var items))
+        {
+            var foundItem = items.Find(i => i.ItemName == item.ItemName);
+            if (foundItem != null && foundItem.Quantity >= quantity)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int GetItemCount(Item item)
+    {
+        if (itemsByCategory.TryGetValue(item.Category, out var itemList))
+        {
+            var foundItem = itemList.Find(i => i.ItemName == item.ItemName);
+            return foundItem != null ? foundItem.Quantity : 0;
+        }
+        return 0;
+    }
+
 }
 
 // Define an event for inventory changes

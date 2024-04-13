@@ -12,6 +12,7 @@ public class InventoryController : EventReceiver
 
     private void UpdateInventoryUI(InventoryChangedEvent eventArgs)
     {
+        // Refresh the UI when the inventory changes
         tabManager?.Refresh();
     }
 
@@ -19,7 +20,8 @@ public class InventoryController : EventReceiver
     {
         if (item != null)
         {
-            inventory?.AddItem(item);
+            // Add the item with its specific quantity to the inventory
+            inventory?.AddItem(item, item.Quantity);
         }
     }
 
@@ -27,6 +29,7 @@ public class InventoryController : EventReceiver
     {
         if (item != null && quantity > 0)
         {
+            // Remove the specified quantity of the item from the inventory
             inventory?.RemoveItem(item, quantity);
         }
     }

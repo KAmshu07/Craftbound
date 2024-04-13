@@ -44,13 +44,13 @@ public class ThirdPersonController : EventReceiver
 
     protected void OnEnable()
     {
-        Subscribe<MoveInputEvent>(HandleMoveInput);
-        Subscribe<JumpInputEvent>(HandleJumpInput);
-        Subscribe<CrouchInputEvent>(HandleCrouchInput);
-        Subscribe<InteractInputEvent>(HandleInteractInput);
-        Subscribe<HealInputEvent>(HandleHealInput);
-        Subscribe<DamageInputEvent>(HandleDamageInput);
-        Subscribe<InventoryInputEvent>(HandleInventoryInput);
+        Subscribe<MoveInputEvent>(HandleMoveInput, "player");
+        Subscribe<JumpInputEvent>(HandleJumpInput, "player");
+        Subscribe<CrouchInputEvent>(HandleCrouchInput, "player");
+        Subscribe<InteractInputEvent>(HandleInteractInput, "player");
+        Subscribe<HealInputEvent>(HandleHealInput, "player");
+        Subscribe<DamageInputEvent>(HandleDamageInput, "player");
+        Subscribe<InventoryInputEvent>(HandleInventoryInput, "player");
         HealthManager.OnHealthChanged += HandleHealthChanged;
         HealthManager.OnEntityDeath += HandleEntityDeath;
     }

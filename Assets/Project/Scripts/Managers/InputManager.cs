@@ -22,37 +22,37 @@ public class InputManager : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
         if (Input.GetButtonDown("Jump"))
         {
-            EventDispatcher.Publish(new JumpInputEvent());
+            EventDispatcher.Publish(new JumpInputEvent(), "player");
         }
 
         if (horizontal != 0 || vertical != 0)
         {
-            EventDispatcher.Publish(new MoveInputEvent(horizontal, vertical));
+            EventDispatcher.Publish(new MoveInputEvent(horizontal, vertical), "player");
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            EventDispatcher.Publish(new CrouchInputEvent());
+            EventDispatcher.Publish(new CrouchInputEvent(), "player");
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            EventDispatcher.Publish(new InteractInputEvent());
+            EventDispatcher.Publish(new InteractInputEvent(), "player");
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            EventDispatcher.Publish(new HealInputEvent());
+            EventDispatcher.Publish(new HealInputEvent(), "player");
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            EventDispatcher.Publish(new DamageInputEvent());
+            EventDispatcher.Publish(new DamageInputEvent(), "player");
         }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            EventDispatcher.Publish(new InventoryInputEvent());
+            EventDispatcher.Publish(new InventoryInputEvent(), "player");
         }
     }
 }

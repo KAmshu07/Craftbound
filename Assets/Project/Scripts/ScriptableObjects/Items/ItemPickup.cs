@@ -21,9 +21,10 @@ public class ItemPickup : MonoBehaviour, IPickable
             Inventory playerInventory = picker.GetComponent<Inventory>();
             if (playerInventory != null)
             {
-                playerInventory.AddItem(item);
+                playerInventory.AddItem(item, item.quantity);
                 Debug.Log($"Picked up {item.itemName} x{item.quantity} by {picker.name} and added to inventory.");
 
+                // Destroy the pickup object from the game world after the item has been picked up
                 Destroy(gameObject);
             }
             else

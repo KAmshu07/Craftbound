@@ -24,6 +24,11 @@ public class TimerManager : MonoBehaviour
     private Dictionary<string, TimerData> timers = new Dictionary<string, TimerData>();
     public bool EnableDebugLogging { get; set; } = false;
 
+    public Dictionary<string, TimerData> GetActiveTimers()
+    {
+        return timers;
+    }
+
     public void StartTimer(string timerId, float duration, Action onTimerFinished, bool countUp = false, Action<float> onTimerTick = null, float tickInterval = 1.0f, bool autoReset = false)
     {
         if (timers.ContainsKey(timerId))
@@ -159,7 +164,7 @@ public class TimerManager : MonoBehaviour
         }
     }
 
-    private class TimerData
+    public class TimerData
     {
         public float Duration;
         public float RemainingTime;

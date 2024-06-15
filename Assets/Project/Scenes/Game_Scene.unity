@@ -335,27 +335,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   craftingStation: {fileID: 11400000, guid: 9dd7a7703c9382d44a420e19e28d3e8b, type: 2}
---- !u!135 &349920171
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349920165}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 5
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &456657737
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,50 +747,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!1 &742157654
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 742157655}
-  - component: {fileID: 742157656}
-  m_Layer: 0
-  m_Name: TimerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &742157655
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742157654}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &742157656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 742157654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e0108f68ca47b4897715cbf66c9497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &827876363
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,50 +794,6 @@ MonoBehaviour:
   playerInventory: {fileID: 1659383791}
   woodenAxeRecipe: {fileID: 11400000, guid: 3066cc64b0fac344b931bd8b7bbcec7b, type: 2}
   craftButton: {fileID: 1207597839}
---- !u!1 &884610656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 884610657}
-  - component: {fileID: 884610658}
-  m_Layer: 0
-  m_Name: TimerExample
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &884610657
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884610656}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &884610658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884610656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d68fb66281b05044d8221b568e2300b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1113703030
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,6 +805,8 @@ GameObject:
   - component: {fileID: 1113703031}
   - component: {fileID: 1113703032}
   - component: {fileID: 1113703033}
+  - component: {fileID: 1113703035}
+  - component: {fileID: 1113703034}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -930,7 +823,7 @@ Transform:
   m_GameObject: {fileID: 1113703030}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.222651, y: 3.0105834, z: -1.2131128}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -964,6 +857,32 @@ MonoBehaviour:
   tabManager: {fileID: 1743260990}
   itemCardUI: {fileID: 479827378}
   inventoryUI: {fileID: 1242241951}
+--- !u!114 &1113703034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113703030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3f57f20c3bd2f4397a62648fbc6a4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialPools: []
+  defaultExpansionAmount: 5
+--- !u!114 &1113703035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113703030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e0108f68ca47b4897715cbf66c9497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1186775850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,9 +1811,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: d9d1fbfcf69364ffd8f9c6ade9ce90fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 349920170}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: d9d1fbfcf69364ffd8f9c6ade9ce90fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 349920171}
   m_SourcePrefab: {fileID: 100100000, guid: d9d1fbfcf69364ffd8f9c6ade9ce90fe, type: 3}
 --- !u!1 &2115691147
 GameObject:
@@ -2049,5 +1965,3 @@ SceneRoots:
   - {fileID: 1242241950}
   - {fileID: 827876364}
   - {fileID: 2093643079}
-  - {fileID: 742157655}
-  - {fileID: 884610657}

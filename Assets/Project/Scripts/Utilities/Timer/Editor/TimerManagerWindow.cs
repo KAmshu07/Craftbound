@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor window for managing timers in Play mode.
+/// </summary>
 public class TimerManagerWindow : EditorWindow
 {
     [MenuItem("Tools/Timer Manager")]
@@ -31,17 +34,17 @@ public class TimerManagerWindow : EditorWindow
 
                 if (GUILayout.Button("Pause"))
                 {
-                    Timer.PauseTimer(timer.Key);
+                    TimerUtility.PauseTimer(timer.Key);
                 }
 
                 if (GUILayout.Button("Resume"))
                 {
-                    Timer.ResumeTimer(timer.Key);
+                    TimerUtility.ResumeTimer(timer.Key);
                 }
 
                 if (GUILayout.Button("Stop"))
                 {
-                    Timer.StopTimer(timer.Key);
+                    TimerUtility.StopTimer(timer.Key);
                 }
 
                 EditorGUILayout.EndHorizontal();
